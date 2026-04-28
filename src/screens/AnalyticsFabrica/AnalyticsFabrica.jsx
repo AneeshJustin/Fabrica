@@ -1,7 +1,10 @@
 import {
+  Banknote,
   BellIcon,
   BoxIcon,
+  CalendarIcon,
   ChevronRightIcon,
+  DownloadIcon,
   LayoutDashboardIcon,
   PackageIcon,
   PercentIcon,
@@ -10,8 +13,11 @@ import {
   SettingsIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
+  ShoppingCart,
   StarIcon,
+  UserPlus,
   UsersIcon,
+  Target,
   TrendingUpIcon,
   TrendingDownIcon,
   BarChart3Icon,
@@ -61,46 +67,55 @@ const keyMetrics = [
   {
     label: 'Total Revenue',
     value: '$142,850.00',
-    change: '-12.9%',
-    positive: false,
+    icon: Banknote,
+    change: '+12.5%',
+    positive: true,
+    statusText: 'Revenue trend strong',
+    statusActive: true,
   },
   {
     label: 'Active Orders',
     value: '1,482',
+    icon: ShoppingCart,
     change: '+8.2%',
     positive: true,
+    statusText: 'Order queue pending',
+    statusActive: false,
   },
   {
     label: 'New Customers',
     value: '842',
-    change: '+18.7%',
-    positive: true,
+    icon: UserPlus,
+    change: '-2.1%',
+    positive: false,
+    statusText: 'Acquisition target idle',
+    statusActive: false,
   },
   {
     label: 'Conversion Rate',
     value: '3.82%',
-    change: '+2.4%',
+    icon: Target,
+    change: '+0.4%',
     positive: true,
+    statusText: 'Goal currently active',
+    statusActive: true,
   },
 ];
 
 const topProducts = [
-  { name: 'Nordic Hammer X1', sales: '$62.9k', growth: '+12.5%' },
-  { name: 'Minimalist Wool Coat', sales: '$45.2k', growth: '+8.3%' },
-  { name: 'Ceramic Vase Set', sales: '$38.7k', growth: '-2.1%' },
-  { name: 'Leather Backpack', sales: '$29.4k', growth: '+15.8%' },
-  { name: 'Smart Watch Pro', sales: '$24.8k', growth: '+5.2%' },
+  { name: 'Nordic Runner X1', sales: '$42.4k', progress: 82, thumb: 'from-red-700 to-zinc-800' },
+  { name: 'Classic Essence Watch', sales: '$31.8k', progress: 68, thumb: 'from-zinc-100 to-zinc-200' },
+  { name: 'Studio Sound Over-Ear', sales: '$22.1k', progress: 44, thumb: 'from-zinc-700 to-zinc-950' },
 ];
 
-const customerMetrics = [
-  { label: 'Retention Rate', value: '78.4%', change: '+3.2%', positive: true },
-  {
-    label: 'Avg. Order Value',
-    value: '$154.20',
-    change: '-2.4%',
-    positive: false,
-  },
-  { label: 'Churn Risk', value: '12.5%', change: '-5.8%', positive: true },
+const revenueTrendData = [
+  { day: 'Mon', current: 46, previous: 39 },
+  { day: 'Tue', current: 41, previous: 36 },
+  { day: 'Wed', current: 58, previous: 47 },
+  { day: 'Thu', current: 50, previous: 42 },
+  { day: 'Fri', current: 63, previous: 51 },
+  { day: 'Sat', current: 33, previous: 28 },
+  { day: 'Sun', current: 54, previous: 45 },
 ];
 
 export const AnalyticsFabrica = () => {
@@ -185,33 +200,59 @@ export const AnalyticsFabrica = () => {
           </header>
           <main className="flex-1">
             <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 p-4 sm:p-6 lg:p-8">
-              <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
-                  Analytics Overview
-                </h1>
-                <p className="text-base leading-[25.6px] text-[#444748]">
-                  Track performance metrics and business insights
-                </p>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
+                    Analytics Overview
+                  </h1>
+                  <p className="text-base leading-[25.6px] text-[#444748]">
+                    Track performance metrics and business insights
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-11 rounded-xl border-zinc-300 px-5 text-sm text-zinc-700"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    Past 30 Days
+                  </Button>
+                  <Button
+                    type="button"
+                    className="h-11 rounded-xl bg-black px-5 text-sm text-white hover:bg-black/90"
+                  >
+                    <DownloadIcon className="mr-2 h-4 w-4" />
+                    Export Data
+                  </Button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {keyMetrics.map((metric) => (
+                {keyMetrics.map((metric) => {
+                  const MetricIcon = metric.icon;
+                  return (
                   <Card
                     key={metric.label}
                     className="rounded-xl border-[#e6e6e6] bg-white shadow-none"
                   >
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <p className="text-sm font-medium tracking-[0.28px] text-[#444748]">
-                            {metric.label}
-                          </p>
-                          <p className="mt-2 text-3xl font-bold tracking-[-0.72px] text-black">
-                            {metric.value}
-                          </p>
+                      <div className="flex min-h-[84px] items-start justify-between gap-2">
+                        <div className="flex min-w-0 flex-1 items-start gap-3">
+                          <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-md bg-zinc-100 text-zinc-700">
+                            <MetricIcon className="h-4 w-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium tracking-[0.28px] text-[#444748]">
+                              {metric.label}
+                            </p>
+                            <p className="mt-2 truncate text-2xl font-bold tracking-[-0.72px] text-black lg:text-3xl">
+                              {metric.value}
+                            </p>
+                          </div>
                         </div>
                         <div
-                          className={`flex items-center gap-1 text-xs font-medium ${
+                          className={`shrink-0 whitespace-nowrap text-right flex items-center gap-1 text-xs font-medium ${
                             metric.positive ? 'text-green-600' : 'text-red-600'
                           }`}
                         >
@@ -223,156 +264,182 @@ export const AnalyticsFabrica = () => {
                           {metric.change}
                         </div>
                       </div>
+                      <div className="mb-3 mt-4 w-full border-t border-zinc-200" />
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`h-2 w-2 rounded-full ${
+                            metric.statusActive ? 'bg-emerald-500' : 'bg-zinc-400'
+                          }`}
+                        />
+                        <span className="text-xs text-[#71717A]">
+                          {metric.statusText}
+                        </span>
+                      </div>
                     </CardContent>
                   </Card>
-                ))}
+                  );
+                })}
               </div>
 
-              <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 mb-6">
-                    <BarChart3Icon className="h-5 w-5 text-[#1a1c1c]" />
-                    <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c]">
-                      Revenue Trends
-                    </h2>
-                  </div>
-                  <div className="h-64 bg-[#f3f3f4] rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <BarChart3Icon className="h-12 w-12 text-[#444748] mx-auto mb-4" />
-                      <p className="text-[#444748]">
-                        Weekly performance comparison
-                      </p>
-                      <p className="text-sm text-[#444748] mt-2">
-                        Current vs Previous period
-                      </p>
+              <div className="grid grid-cols-1 gap-3 lg:grid-cols-[2fr_1fr]">
+                <Card className="rounded-lg border-[#d4d4d8] bg-white shadow-none">
+                  <CardContent className="p-4">
+                    <div className="mb-3 flex items-start justify-between">
+                      <div>
+                        <h2 className="text-2xl font-semibold text-[#1a1c1c]">Revenue Trends</h2>
+                        <p className="text-xs text-[#71717A]">Weekly performance comparisons</p>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-[#71717A]">
+                        <span className="flex items-center gap-1">
+                          <span className="h-2 w-2 rounded-full bg-black" />
+                          Current
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <span className="h-2 w-2 rounded-full bg-zinc-300" />
+                          Previous
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-2 mb-6">
-                      <TargetIcon className="h-5 w-5 text-[#1a1c1c]" />
-                      <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c]">
-                        Top Products
-                      </h2>
-                    </div>
-                    <div className="space-y-4">
-                      {topProducts.map((product, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-100 text-sm font-medium text-[#1a1c1c]">
-                              {index + 1}
+                    <div className="relative h-56 rounded-md bg-[#f4f4f5] px-5 pb-5 pt-6">
+                      <div className="absolute inset-x-5 top-7 h-0.5 bg-zinc-200" />
+                      <div className="absolute inset-x-5 top-[78px] h-0.5 bg-zinc-200" />
+                      <div className="absolute inset-x-5 top-[128px] h-0.5 bg-zinc-200" />
+                      <div className="absolute inset-x-5 bottom-8 h-0.5 bg-zinc-200" />
+                      <div className="flex h-full items-end justify-between gap-2">
+                        {revenueTrendData.map((item) => (
+                          <div key={item.day} className="flex w-full flex-col items-center justify-end gap-1">
+                            <div className="flex h-[78%] w-full items-end justify-center gap-1">
+                              <div
+                                className="w-[44%] rounded-t bg-zinc-400/70"
+                                style={{ height: `${Math.max(20, item.previous)}%` }}
+                              />
+                              <div
+                                className="w-[44%] rounded-t bg-zinc-900"
+                                style={{ height: `${item.current}%` }}
+                              />
                             </div>
-                            <div>
-                              <p className="text-sm font-medium text-[#1a1c1c]">
-                                {product.name}
-                              </p>
-                              <p className="text-xs text-[#444748]">
-                                {product.sales}
-                              </p>
-                            </div>
+                            <span className="text-[10px] text-zinc-400">{item.day}</span>
+                            <span className="text-[9px] text-zinc-500">{item.current}k / {item.previous}k</span>
                           </div>
-                          <div
-                            className={`flex items-center gap-1 text-xs font-medium ${
-                              product.growth.startsWith('+')
-                                ? 'text-green-600'
-                                : 'text-red-600'
-                            }`}
-                          >
-                            <TrendingUpIcon className="h-3 w-3" />
-                            {product.growth}
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="rounded-lg border-[#d4d4d8] bg-white shadow-none">
+                  <CardContent className="p-4">
+                    <h2 className="mb-4 text-2xl font-semibold text-[#1a1c1c]">Top Products</h2>
+                    <div className="space-y-4">
+                      {topProducts.map((product) => (
+                        <div key={product.name} className="space-y-1.5">
+                          <div className="flex items-center gap-2">
+                            <div className={`h-8 w-8 rounded bg-linear-to-br ${product.thumb}`} />
+                            <p className="flex-1 truncate text-xs text-[#1a1c1c]">{product.name}</p>
+                            <span className="text-xs text-[#52525B]">{product.sales}</span>
+                          </div>
+                          <div className="h-1.5 w-full rounded-full bg-zinc-200">
+                            <div
+                              className="h-full rounded-full bg-zinc-900"
+                              style={{ width: `${product.progress}%` }}
+                            />
                           </div>
                         </div>
                       ))}
                     </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="mt-5 h-auto p-0 text-xs text-[#1a1c1c] hover:bg-transparent"
+                    >
+                      View Detailed Report
+                      <ChevronRightIcon className="ml-1 h-3 w-3" />
+                    </Button>
                   </CardContent>
                 </Card>
+              </div>
 
-                <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-2 mb-6">
-                      <UsersIcon className="h-5 w-5 text-[#1a1c1c]" />
-                      <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c]">
-                        Customer Growth & Loyalty
-                      </h2>
+              <Card className="rounded-lg border-[#d4d4d8] bg-white shadow-none">
+                <CardContent className="p-0">
+                  <div className="flex items-start justify-between border-b border-zinc-200 px-4 py-3">
+                    <div>
+                      <h2 className="text-2xl font-semibold text-[#1a1c1c]">Customer Growth & Loyalty</h2>
+                      <p className="text-xs text-[#71717A]">Breakdown of customer segments and retention</p>
                     </div>
-                    <div className="space-y-6">
-                      <div className="flex flex-wrap gap-2">
-                        <ToggleGroup
-                          type="single"
-                          value={selectedPeriod}
-                          onValueChange={(value) => {
-                            if (value) setSelectedPeriod(value);
-                          }}
-                          className="justify-start"
-                        >
-                          <ToggleGroupItem
-                            value="Weekly"
-                            className="h-auto rounded-lg px-4 py-2 text-sm font-medium tracking-[0.28px] data-[state=on]:bg-black data-[state=on]:text-white"
-                          >
-                            Weekly
-                          </ToggleGroupItem>
-                          <ToggleGroupItem
-                            value="Monthly"
-                            className="h-auto rounded-lg px-4 py-2 text-sm font-medium tracking-[0.28px] data-[state=on]:bg-black data-[state=on]:text-white"
-                          >
-                            Monthly
-                          </ToggleGroupItem>
-                          <ToggleGroupItem
-                            value="Yearly"
-                            className="h-auto rounded-lg px-4 py-2 text-sm font-medium tracking-[0.28px] data-[state=on]:bg-black data-[state=on]:text-white"
-                          >
-                            Yearly
-                          </ToggleGroupItem>
-                        </ToggleGroup>
+                    <ToggleGroup
+                      type="single"
+                      value={selectedPeriod}
+                      onValueChange={(value) => {
+                        if (value) setSelectedPeriod(value);
+                      }}
+                      className="justify-start rounded-md bg-zinc-100 p-1"
+                    >
+                      <ToggleGroupItem
+                        value="Weekly"
+                        className="h-6 rounded px-3 text-[10px] font-semibold data-[state=on]:bg-white data-[state=on]:text-black"
+                      >
+                        Weekly
+                      </ToggleGroupItem>
+                      <ToggleGroupItem
+                        value="Monthly"
+                        className="h-6 rounded px-3 text-[10px] font-semibold data-[state=on]:bg-white data-[state=on]:text-black"
+                      >
+                        Monthly
+                      </ToggleGroupItem>
+                      <ToggleGroupItem
+                        value="Yearly"
+                        className="h-6 rounded px-3 text-[10px] font-semibold data-[state=on]:bg-white data-[state=on]:text-black"
+                      >
+                        Yearly
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                  </div>
+                  <div className="grid grid-cols-1 divide-y divide-zinc-200 md:grid-cols-3 md:divide-x md:divide-y-0">
+                    <div className="space-y-2 px-4 py-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.5px] text-[#71717A]">Retention Rate</p>
+                      <div className="flex items-end gap-2">
+                        <p className="text-4xl font-bold text-[#1a1c1c]">78.4%</p>
+                        <span className="pb-1 text-xs font-medium text-emerald-600">+4.2%</span>
                       </div>
-                      <div className="space-y-4">
-                        {customerMetrics.map((metric) => (
-                          <div
-                            key={metric.label}
-                            className="flex items-center justify-between"
-                          >
-                            <div>
-                              <p className="text-sm text-[#444748]">
-                                {metric.label}
-                              </p>
-                              <p className="text-lg font-semibold text-[#1a1c1c]">
-                                {metric.value}
-                              </p>
-                            </div>
-                            <div
-                              className={`flex items-center gap-1 text-xs font-medium ${
-                                metric.positive
-                                  ? 'text-green-600'
-                                  : 'text-red-600'
-                              }`}
-                            >
-                              {metric.positive ? (
-                                <TrendingUpIcon className="h-3 w-3" />
-                              ) : (
-                                <TrendingDownIcon className="h-3 w-3" />
-                              )}
-                              {metric.change}
-                            </div>
-                          </div>
-                        ))}
+                      <div className="flex items-center justify-between text-[10px] text-[#71717A]">
+                        <span>Returning Customers</span>
+                        <span>642</span>
+                      </div>
+                      <div className="h-1 w-full rounded-full bg-zinc-200">
+                        <div className="h-full w-[78%] rounded-full bg-zinc-900" />
+                      </div>
+                    </div>
+                    <div className="space-y-2 px-4 py-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.5px] text-[#71717A]">Avg. Order Value</p>
+                      <div className="flex items-end gap-2">
+                        <p className="text-4xl font-bold text-[#1a1c1c]">$154.20</p>
+                        <span className="pb-1 text-xs font-medium text-emerald-600">+$12.50</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[10px] text-[#71717A]">
+                        <span>Previous Month</span>
+                        <span>$141.70</span>
+                      </div>
+                      <div className="h-1 w-full rounded-full bg-zinc-200">
+                        <div className="h-full w-[62%] rounded-full bg-zinc-900" />
+                      </div>
+                    </div>
+                    <div className="space-y-3 px-4 py-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.5px] text-[#71717A]">Churn Risk</p>
+                      <div className="flex items-end gap-2">
+                        <p className="text-4xl font-bold text-[#1a1c1c]">12.5%</p>
+                        <span className="pb-1 text-xs font-medium text-rose-500">-0.8%</span>
                       </div>
                       <Button
                         type="button"
-                        className="w-full h-auto rounded-lg bg-black px-6 py-3 text-sm font-medium tracking-[0.28px] text-white hover:bg-black/90"
+                        variant="outline"
+                        className="h-8 w-full rounded-md border-zinc-500 text-xs text-[#1a1c1c]"
                       >
                         Launch Re-engagement Campaign
                       </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </main>
         </div>
