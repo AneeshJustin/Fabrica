@@ -1,0 +1,1 @@
+export { AddProductFabrica } from "./AddProductFabrica";
