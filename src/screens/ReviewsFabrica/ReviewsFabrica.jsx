@@ -84,8 +84,8 @@ const reviewStats = [
   positive: true,
   icon: 'star',
 },
-  { label: 'PENDING APPROVAL', value: '24', change: null, positive: null },
-  { label: 'RESPONSE RATE', value: '94%', change: null, positive: null },
+  { label: 'PENDING APPROVAL', value: '24', change: null, positive: null, changeText: 'Requires attention', textColor: '#D97706' },
+  { label: 'RESPONSE RATE', value: '94%', change: null, positive: null, changeText: 'Avg. response: 2.4 hrs' },
 ];
 
 const reviews = [
@@ -255,6 +255,14 @@ export const ReviewsFabrica = () => {
 
                               <span>{stat.change}</span>
                             </div>
+                          )}
+                          {stat.changeText && !stat.change && (
+                            <p 
+                              className="mt-1 text-sm"
+                              style={{ color: stat.textColor || '#71717a' }}
+                            >
+                              {stat.changeText}
+                            </p>
                           )}
                         </div>
 
