@@ -1,7 +1,9 @@
 import {
   BellIcon,
   BoxIcon,
+  ChevronLeftIcon,
   ChevronRightIcon,
+  CircleQuestionMark,
   LayoutDashboardIcon,
   PackageIcon,
   PercentIcon,
@@ -26,11 +28,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '../../components/ui/avatar';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/card';
 import { Input } from '../../components/ui/input';
@@ -41,6 +38,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../components/ui/select';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '../../components/ui/avatar';
 
 const sidebarItems = [
   {
@@ -150,6 +152,16 @@ export const ReviewsFabrica = () => {
   const navigate = useNavigate();
   const currentPath = '/reviews-u45-fabrica-admin';
   const [selectedFilter, setSelectedFilter] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const totalReviews = Number.parseInt(
+    reviewStats.find((stat) => stat.label === 'TOTAL REVIEWS')?.value.replace(/,/g, '') || '0',
+    10,
+  );
+  const totalPages = Math.max(1, Math.ceil(totalReviews / pageSize));
+  const showingStart = totalReviews > 0 ? (currentPage - 1) * pageSize + 1 : 0;
+  const showingEnd = Math.min(currentPage * pageSize, totalReviews);
+  const paginationPages = [...new Set([1, 2, 5, totalPages].filter((page) => page <= totalPages))];
 
   return (
     <div
@@ -207,10 +219,11 @@ export const ReviewsFabrica = () => {
                   <BellIcon className="h-4 w-4" />
                   <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" />
                 </Button>
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://c.animaapp.com/moiaal67fUcb10/img/ab6axudujliuhmsfz-kml2eff3xzw8jhaqg4shdysrflycmnxnkkwtupe-op05ir.png" />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
+                <Button variant="ghost" size="icon" aria-label="Help">
+                  <CircleQuestionMark className="h-4 w-4 text-zinc-600" />
+                </Button>
+                <span className="h-5 w-px bg-zinc-300" />
+                <span className="text-md font-medium text-black">Profile</span>
               </div>
             </div>
           </header>
@@ -364,19 +377,45 @@ export const ReviewsFabrica = () => {
                   </Card>
                 ))}
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <Button variant="outline" size="sm">
-                  1
-                </Button>
-                <Button variant="outline" size="sm">
-                  2
-                </Button>
-                <Button variant="outline" size="sm">
-                  5
-                </Button>
-                <Button variant="outline" size="sm">
-                  128
-                </Button>
+              <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-zinc-500">
+                  Showing {showingStart} to {showingEnd} of {totalReviews.toLocaleString()} reviews
+                </p>
+                <div className="flex items-center justify-center gap-2 bg-white p-2 text-[#52525B] sm:justify-end">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                    aria-label="Previous page"
+                    className="h-9 w-9 p-0 border-zinc-300 text-[#52525B] hover:bg-zinc-100"
+                  >
+                    <ChevronLeftIcon className="h-4 w-4" />
+                  </Button>
+                  {paginationPages.map((page) => (
+                    <Button
+                      key={page}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage(page)}
+                      className={`border-zinc-300 text-[#52525B] hover:bg-zinc-100 ${
+                        currentPage === page ? 'bg-zinc-100' : 'bg-white'
+                      }`}
+                    >
+                      {page}
+                    </Button>
+                  ))}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                    aria-label="Next page"
+                    className="h-9 w-9 p-0 border-zinc-300 text-[#52525B] hover:bg-zinc-100"
+                  >
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </main>
