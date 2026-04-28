@@ -22,6 +22,7 @@ import {
   ThumbsDownIcon,
   TrendingUpIcon,
   TrendingDownIcon,
+  CheckCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -99,7 +100,7 @@ const reviews = [
     date: '2024-04-15',
     review:
       'Absolutely love this hammer! Perfect balance and weight. The craftsmanship is exceptional.',
-    status: 'published',
+    status: 'pending',
     verified: true,
   },
   {
@@ -227,7 +228,7 @@ export const ReviewsFabrica = () => {
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {reviewStats.map((stat) => (
-                  <Card key={stat.label}>
+                  <Card key={stat.label} className="border border-zinc-200 shadow-none">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between">
                         <div>
@@ -278,10 +279,29 @@ export const ReviewsFabrica = () => {
               </div>
               <div className="space-y-4">
                 {reviews.map((review) => (
-                  <Card key={review.id}>
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start gap-4">
+                  <Card
+                    key={review.id}
+                    className={
+                      review.status === 'published'
+                        ? 'border-0 bg-[#FAFAFA]'
+                        : review.status === 'pending'
+                          ? 'border-0 bg-[#FFFFFF]'
+                          : undefined
+                    }
+                  >
+                    <CardContent className="relative p-6">
+                      {review.status === 'pending' && (
+                        <div className="absolute right-6 top-6 rounded-full bg-[#FEF3C7] px-3 py-1 text-xs font-semibold text-[#92400E]">
+                          Pending approval
+                        </div>
+                      )}
+                      {review.status === 'published' && (
+                        <div className="absolute right-6 top-1/2 -translate-y-1/2 rounded-full bg-[#E4E4E7] px-3 py-1 text-xs font-semibold text-zinc-700">
+                          Published
+                        </div>
+                      )}
+                      <div className="flex items-start justify-between gap-6">
+                        <div className="flex min-w-0 items-start gap-4">
                           <Avatar className="h-10 w-10">
                             <AvatarImage src={review.avatar} />
                             <AvatarFallback>
@@ -291,17 +311,11 @@ export const ReviewsFabrica = () => {
                                 .join('')}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="flex-1">
+                          <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
                               <h3 className="font-semibold text-zinc-900">
                                 {review.customer}
                               </h3>
-                              {review.verified && (
-                                <div className="flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs text-green-700">
-                                  <CheckIcon className="h-3 w-3" />
-                                  Verified
-                                </div>
-                              )}
                             </div>
                             <p className="text-sm text-zinc-500">
                               {review.product} • {review.date}
@@ -314,19 +328,36 @@ export const ReviewsFabrica = () => {
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Button variant="outline" size="sm" className="gap-2">
-                            Edit
-                          </Button>
-                          <Button variant="outline" size="sm" className="gap-2">
-                            Decline
-                          </Button>
-                          <Button
-                            size="sm"
-                            className="gap-2 bg-black text-white hover:bg-black"
-                          >
-                            Approve
-                          </Button>
+                      </div>
+                      <div className="mt-6 flex items-center justify-between gap-4">
+                        <div className="text-sm text-[#A1A1AA]">
+                          {review.id === 1
+                            ? 'October 24, 2023 • Verified Purchase'
+                            : review.id === 3
+                              ? 'October 20, 2023 • Verified Purchase'
+                              : null}
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          {review.status === 'pending' && (
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2 border-gray-300 text-[#52525B] shadow-none hover:bg-gray-100"
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                                Delete
+                              </Button>
+
+                              <Button
+                                size="sm"
+                                className="gap-2 bg-[#18181B] text-white border-0 shadow-none hover:bg-[#18181B]"
+                              >
+                                <CheckCircle className="h-4 w-4" />
+                                Approve
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </div>
                     </CardContent>
