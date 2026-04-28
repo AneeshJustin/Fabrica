@@ -1,6 +1,7 @@
 import {
   BellIcon,
   BoxIcon,
+  ChevronLeftIcon,
   ChevronRightIcon,
   LayoutDashboardIcon,
   PackageIcon,
@@ -15,6 +16,8 @@ import {
   RefreshCwIcon,
   CalendarIcon,
   SparklesIcon,
+  PencilIcon,
+  Trash2Icon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../components/ui/select';
+import campaignImage from '../../assets/11.png';
 
 const sidebarItems = [
   {
@@ -66,43 +70,39 @@ const sidebarItems = [
 const discountCoupons = [
   {
     code: 'SPRING30',
-    type: 'percentage',
+    type: 'PERCENTAGE',
     value: '30% OFF',
-    expiration: '2024-06-30',
+    expiration: 'Oct 24, 2024',
     active: true,
-    usage: '234 uses',
+    usage: '4,112 Redemptions',
+    updatedAgo: 'Updated 3h ago',
   },
   {
     code: 'WELCOME50',
-    type: 'value',
+    type: 'FLAT AMOUNT',
     value: '$50 OFF',
-    expiration: '2024-12-31',
-    active: true,
-    usage: '156 uses',
+    expiration: 'No expiry date',
+    active: false,
+    usage: '1,890 Redemptions',
+    updatedAgo: 'Updated 4d ago',
   },
   {
     code: 'LOYALTY10',
-    type: 'percentage',
+    type: 'PERCENTAGE',
     value: '10% OFF',
-    expiration: '2024-08-15',
+    expiration: 'Dec 31, 2024',
     active: true,
-    usage: '89 uses',
+    usage: '2,145 Redemptions',
+    updatedAgo: 'Updated 1w ago',
   },
   {
     code: 'REF-25',
-    type: 'value',
+    type: 'FLAT AMOUNT',
     value: '$25 OFF',
-    expiration: '2024-07-20',
-    active: false,
-    usage: '45 uses',
-  },
-  {
-    code: 'SUMMER20',
-    type: 'percentage',
-    value: '20% OFF',
-    expiration: '2024-09-01',
+    expiration: 'No expiry date',
     active: true,
-    usage: '178 uses',
+    usage: '780 Redemptions',
+    updatedAgo: 'Updated 8h ago',
   },
 ];
 
@@ -173,7 +173,7 @@ export const DiscountsFabrica = () => {
                 <Input
                   defaultValue=""
                   placeholder="Search discounts..."
-                  className="h-11 rounded-full border-[#c4c7c7] bg-[#eeeeee] pl-11 text-sm text-gray-500 placeholder:text-gray-500"
+                  className="h-11 rounded-full border-0 bg-[#eeeeee] pl-11 text-sm text-gray-500 placeholder:text-gray-500 shadow-none outline-none ring-0 focus:ring-0 focus:outline-none"
                 />
               </div>
               <div className="flex items-center gap-6">
@@ -202,12 +202,23 @@ export const DiscountsFabrica = () => {
           <main className="flex-1">
             <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 p-4 sm:p-6 lg:p-8">
               <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
-                  Discounts & Coupons
-                </h1>
-                <p className="text-base leading-[25.6px] text-[#444748]">
-                  Create and manage promotional discounts and coupon codes
-                </p>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
+                      Discounts
+                    </h1>
+                    <p className="text-base leading-[25.6px] text-[#444748]">
+                      Manage promotional codes and special offers accross the store.
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    className="h-9 shrink-0 rounded-md bg-black px-4 text-xs font-medium text-white hover:bg-black/90"
+                  >
+                    <PlusIcon className="mr-1.5 h-3.5 w-3.5" />
+                    Create Discount
+                  </Button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -225,7 +236,7 @@ export const DiscountsFabrica = () => {
                           <Input
                             value={couponCode}
                             onChange={(e) => setCouponCode(e.target.value)}
-                            placeholder="Enter coupon code"
+                            placeholder="e.g. SUMMER24"
                             className="h-12 rounded-lg border-0 bg-[#f3f3f4] px-4 text-base text-[#1a1c1c] placeholder:text-gray-500"
                           />
                           <Button
@@ -289,14 +300,21 @@ export const DiscountsFabrica = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between rounded-lg border-0 bg-[#FAFAFA] border-zinc-300 px-4 py-3">
                         <label className="text-sm font-medium text-[#1a1c1c]">
-                          Active
+                          Active Status
+                          <p className="text-xs text-[#444748]">
+                            Enable code immediately
+                          </p>
                         </label>
-                        <Switch
-                          checked={isActive}
-                          onCheckedChange={setIsActive}
-                        />
+                        <div className="flex items-center gap-2">
+                  
+                          <Switch
+                            checked={isActive}
+                            onCheckedChange={setIsActive}
+                            className="h-7 w-12 border-0 bg-zinc-300 p-0.5 data-[state=checked]:bg-black data-[state=unchecked]:bg-zinc-300 [&>span]:h-6 [&>span]:w-6 [&>span]:border-2 [&>span]:border-black [&>span]:bg-white [&>span]:data-[state=checked]:translate-x-5 [&>span]:data-[state=unchecked]:translate-x-0"
+                          />
+                        </div>
                       </div>
 
                       <Button
@@ -308,14 +326,14 @@ export const DiscountsFabrica = () => {
 
                       <Card className="rounded-lg border-[#e6e6e6] bg-[#f3f3f4] p-4">
                         <div className="flex items-start gap-3">
-                          <SparklesIcon className="h-5 w-5 text-yellow-600 mt-0.5" />
+                      
                           <div>
                             <p className="text-sm font-semibold text-[#1a1c1c]">
                               Campaign Tip
                             </p>
                             <p className="text-xs text-[#444748] mt-1">
-                              Create urgency by setting expiration dates within
-                              7-14 days for maximum conversion.
+                            Limited-time offers typically see 45% higher
+                            conversion rates. Set an expiration date for FOMO.
                             </p>
                           </div>
                         </div>
@@ -325,80 +343,188 @@ export const DiscountsFabrica = () => {
                 </Card>
 
                 <div className="space-y-6">
-                  <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
+                  <Card className="border-0 bg-transparent shadow-none">
                     <CardContent className="p-8">
-                      <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-semibold leading-[31.2px] text-[#1a1c1c]">
-                          Active Discounts
-                        </h2>
-                        <span className="text-sm text-[#444748]">
-                          Showing 1-10 of 26 discounts
-                        </span>
-                      </div>
-                      <div className="space-y-4">
-                        {discountCoupons.map((coupon) => (
+                      
+                      <div className="grid gap-4 md:grid-cols-2 -mt-8">
+                        {discountCoupons.slice(0, 2).map((coupon) => (
                           <Card
                             key={coupon.code}
-                            className="rounded-lg border-[#e6e6e6] bg-white p-4"
+                            className="relative overflow-hidden rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] p-4 shadow-none"
                           >
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                                  <PercentIcon className="h-6 w-6 text-white" />
-                                </div>
-                                <div>
-                                  <p className="font-semibold text-[#1a1c1c]">
-                                    {coupon.code}
-                                  </p>
-                                  <p className="text-lg font-bold text-black">
-                                    {coupon.value}
-                                  </p>
-                                  <p className="text-xs text-[#444748]">
-                                    Expires: {coupon.expiration} •{' '}
-                                    {coupon.usage}
-                                  </p>
+                            <div
+                              className={`absolute inset-x-0 top-0 h-1 ${
+                                coupon.type === 'FLAT AMOUNT' ? 'bg-[#A1A1AA]' : 'bg-[#18181B]'
+                              }`}
+                            />
+                            <div className="space-y-4">
+                              <div className="flex items-start justify-between">
+                                <span
+                                  className={`rounded px-1.5 py-0.5 text-[8px] font-semibold tracking-[0.5px] text-white ${
+                                    coupon.type === 'FLAT AMOUNT' && coupon.code !== 'REF-25'
+                                      ? 'bg-zinc-500'
+                                      : 'bg-black'
+                                  }`}
+                                >
+                                  {coupon.type}
+                                </span>
+                                <div className="flex items-center gap-2 text-zinc-400">
+                                  <PencilIcon className="h-3 w-3" />
+                                  <Trash2Icon className="h-3 w-3" />
                                 </div>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <Switch checked={coupon.active} />
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  className="h-auto p-0 text-zinc-700 hover:bg-transparent"
+                              <div>
+                                <p className="text-xl font-semibold text-[#1a1c1c]">
+                                  {coupon.code}
+                                </p>
+                                <p className="text-2xl font-bold text-black">
+                                  {coupon.value}
+                                </p>
+                                <p className="flex items-center gap-1 text-xs text-[#71717A]">
+                                  <CalendarIcon className="h-3 w-3" />
+                                  Expires: {coupon.expiration}
+                                </p>
+                                <p className="mt-1 flex items-center gap-1 text-xs text-[#71717A]">
+                                  <UsersIcon className="h-3 w-3" />
+                                  {coupon.usage}
+                                </p>
+                              </div>
+                              <div className="flex items-center justify-between text-[10px] text-[#A1A1AA]">
+                                <span
+                                  className={`flex items-center gap-1 ${
+                                    coupon.active ? 'text-emerald-600' : 'text-zinc-400'
+                                  }`}
                                 >
-                                  <ChevronRightIcon className="h-4 w-4" />
-                                </Button>
+                                  <span
+                                    className={`h-1.5 w-1.5 rounded-full ${
+                                      coupon.active ? 'bg-emerald-500' : 'bg-zinc-400'
+                                    }`}
+                                  />
+                                  {coupon.active ? 'ACTIVE' : 'INACTIVE'}
+                                </span>
+                                <span>{coupon.updatedAgo}</span>
+                              </div>
+                            </div>
+                          </Card>
+                        ))}
+                        <Card className="md:col-span-2 rounded-lg border-0 bg-[#111217] p-4 shadow-none">
+                          <div className="flex items-center justify-between gap-4">
+                            <div className="max-w-[60%]">
+                              <p className="text-[9px] font-semibold uppercase tracking-[1px] text-zinc-400">
+                                Special Campaign
+                              </p>
+                              <h3 className="mt-2 text-4xl font-semibold leading-none text-white">
+                                Black Friday
+                                <br />
+                                Prep.
+                              </h3>
+                              <p className="mt-3 text-xs text-zinc-400">
+                                Automate your holiday discounts. Set triggers for
+                                volume-based pricing and member-only early access.
+                              </p>
+                              <Button
+                                type="button"
+                                className="mt-4 h-8 rounded-md bg-zinc-900 px-3 text-xs text-white hover:bg-zinc-800"
+                              >
+                                Configure Event
+                              </Button>
+                            </div>
+                            <img
+                              src={campaignImage}
+                              alt="Black Friday campaign"
+                              className="h-24 w-44 rounded border border-zinc-600 object-cover"
+                            />
+                          </div>
+                        </Card>
+                        {discountCoupons.slice(2, 4).map((coupon) => (
+                          <Card
+                            key={coupon.code}
+                            className="relative overflow-hidden rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] p-4 shadow-none"
+                          >
+                            <div
+                              className={`absolute inset-x-0 top-0 h-1 ${
+                                coupon.type === 'FLAT AMOUNT' ? 'bg-[#A1A1AA]' : 'bg-[#18181B]'
+                              }`}
+                            />
+                            <div className="space-y-4">
+                              <div className="flex items-start justify-between">
+                                <span
+                                  className={`rounded px-1.5 py-0.5 text-[8px] font-semibold tracking-[0.5px] text-white ${
+                                    coupon.type === 'FLAT AMOUNT' && coupon.code !== 'REF-25'
+                                      ? 'bg-zinc-500'
+                                      : 'bg-black'
+                                  }`}
+                                >
+                                  {coupon.type}
+                                </span>
+                                <div className="flex items-center gap-2 text-zinc-400">
+                                  <PencilIcon className="h-3 w-3" />
+                                  <Trash2Icon className="h-3 w-3" />
+                                </div>
+                              </div>
+                              <div>
+                                <p className="text-xl font-semibold text-[#1a1c1c]">
+                                  {coupon.code}
+                                </p>
+                                <p className="text-2xl font-bold text-black">
+                                  {coupon.value}
+                                </p>
+                                <p className="flex items-center gap-1 text-xs text-[#71717A]">
+                                  <CalendarIcon className="h-3 w-3" />
+                                  Expires: {coupon.expiration}
+                                </p>
+                                <p className="mt-1 flex items-center gap-1 text-xs text-[#71717A]">
+                                  <UsersIcon className="h-3 w-3" />
+                                  {coupon.usage}
+                                </p>
+                              </div>
+                              <div className="flex items-center justify-between text-[10px] text-[#A1A1AA]">
+                                <span
+                                  className={`flex items-center gap-1 ${
+                                    coupon.active ? 'text-emerald-600' : 'text-zinc-400'
+                                  }`}
+                                >
+                                  <span
+                                    className={`h-1.5 w-1.5 rounded-full ${
+                                      coupon.active ? 'bg-emerald-500' : 'bg-zinc-400'
+                                    }`}
+                                  />
+                                  {coupon.active ? 'ACTIVE' : 'INACTIVE'}
+                                </span>
+                                <span>{coupon.updatedAgo}</span>
                               </div>
                             </div>
                           </Card>
                         ))}
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
-                          <SparklesIcon className="h-8 w-8 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-[#1a1c1c]">
-                            Black Friday Prep.
-                          </h3>
-                          <p className="text-sm text-[#444748] mb-3">
-                            Prepare your biggest sale event of the year
-                          </p>
+                      <div className="mt-8 flex items-center justify-between">
+                        <span className="text-sm text-[#71717A]">
+                          Showing 6 of 26 Discounts
+                        </span>
+                        <div className="flex items-center gap-2">
                           <Button
                             type="button"
-                            className="h-auto rounded-lg bg-black px-4 py-2 text-sm font-medium tracking-[0.28px] text-white hover:bg-black/90"
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7 border-zinc-200 text-zinc-500"
+                            aria-label="Previous discounts"
                           >
-                            Configure Event
+                            <ChevronLeftIcon className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="h-7 w-7 border-zinc-200 text-zinc-500"
+                            aria-label="Next discounts"
+                          >
+                            <ChevronRightIcon className="h-3.5 w-3.5" />
                           </Button>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
+
                 </div>
               </div>
             </div>
