@@ -231,21 +231,21 @@ export const MainContentWrapperSubsection = () => {
     };
 
     return (
-        <section className="flex w-full flex-col items-start gap-8 self-stretch px-8 pb-16 pt-8">
-            <header className="flex w-full flex-[0_0_auto] items-end justify-between self-stretch">
+        <section className="flex w-full flex-col items-start gap-8 self-stretch px-4 pb-16 pt-6 md:px-8 md:pt-8">
+            <header className="flex w-full flex-[0_0_auto] flex-col gap-4 self-stretch md:flex-row md:items-end md:justify-between">
                 <div className="inline-flex flex-[0_0_auto] flex-col items-start gap-[3px]">
                     <div className="flex w-full flex-[0_0_auto] flex-col items-start self-stretch">
-                        <h1 className="mt-[-1.00px] flex h-[39px] w-[137.08px] items-center whitespace-nowrap [font-family:'Manrope',Helvetica] text-[32px] font-semibold leading-[38.4px] tracking-[-0.32px] text-black">
+                        <h1 className="mt-[-1.00px] flex items-center [font-family:'Manrope',Helvetica] text-[32px] font-semibold leading-[38.4px] tracking-[-0.32px] text-black">
                             Products
                         </h1>
                     </div>
-                    <p className="mt-[-1.00px] flex h-[26px] w-[278.75px] items-center whitespace-nowrap [font-family:'Manrope',Helvetica] text-base font-normal leading-[25.6px] tracking-[0] text-[#444748]">
+                    <p className="mt-[-1.00px] flex items-center [font-family:'Manrope',Helvetica] text-base font-normal leading-[25.6px] tracking-[0] text-[#444748]">
                         Manage your catalog and stock levels.
                     </p>
                 </div>
                 <Button 
                     onClick={() => navigate("/add-product-u45-fabrica-admin")}
-                    className="h-auto gap-2 rounded-lg bg-black px-8 py-4 shadow-[0px_1px_2px_#0000000d] hover:bg-black"
+                    className="h-auto w-full gap-2 rounded-lg bg-black px-8 py-4 shadow-[0px_1px_2px_#0000000d] hover:bg-black md:w-auto"
                 >
                     <PlusIcon className="h-4 w-4" />
                     <span className="flex h-5 w-[84.34px] items-center justify-center whitespace-nowrap text-center [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-white">
@@ -254,9 +254,9 @@ export const MainContentWrapperSubsection = () => {
                 </Button>
             </header>
             <Card className="w-full rounded-xl border-zinc-100 bg-white shadow-none">
-                <CardContent className="flex items-end gap-4 px-6 pb-[23px] pt-[31px]">
-                    <div className="grid flex-1 grid-cols-3 gap-4">
-                        <div className="flex min-w-60 flex-col gap-[7px]">
+                <CardContent className="flex flex-col gap-4 px-4 pb-[23px] pt-[31px] md:flex-row md:items-end md:px-6">
+                    <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="flex min-w-0 flex-col gap-[7px]">
                             <label className="h-[15px] whitespace-nowrap [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0] text-[#444748]">
                                 Category
                             </label>
@@ -273,7 +273,7 @@ export const MainContentWrapperSubsection = () => {
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="flex min-w-60 flex-col gap-[7px]">
+                        <div className="flex min-w-0 flex-col gap-[7px]">
                             <label className="h-[15px] whitespace-nowrap [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0] text-[#444748]">
                                 Stock Level
                             </label>
@@ -290,7 +290,7 @@ export const MainContentWrapperSubsection = () => {
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="flex min-w-60 flex-col gap-[7px]">
+                        <div className="flex min-w-0 flex-col gap-[7px]">
                             <label className="h-[15px] whitespace-nowrap [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0] text-[#444748]">
                                 Price Range
                             </label>
@@ -315,7 +315,7 @@ export const MainContentWrapperSubsection = () => {
                     </div>
                     <Button
                         variant="secondary"
-                        className="h-auto rounded-lg bg-[#e2e3de] px-6 py-2.5 [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-[#636561] shadow-none hover:bg-[#e2e3de]"
+                        className="h-auto w-full rounded-lg bg-[#e2e3de] px-6 py-2.5 [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-[#636561] shadow-none hover:bg-[#e2e3de] md:w-auto"
                         onClick={clearFilters}
                     >
                         Clear Filters
@@ -325,28 +325,28 @@ export const MainContentWrapperSubsection = () => {
             <Card className="w-full overflow-hidden rounded-xl border-zinc-100 bg-white shadow-[0px_1px_2px_#0000000d]">
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
-                        <Table>
+                        <Table className="table-fixed text-xs md:text-sm">
                             <TableHeader className="bg-[#fafafa80]">
                                 <TableRow className="border-zinc-100 hover:bg-transparent">
-                                    <TableHead className="h-auto min-w-[509.14px] px-6 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748]">
+                                    <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                                         PRODUCT
                                     </TableHead>
-                                    <TableHead className="h-auto min-w-[289.98px] px-6 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748]">
+                                    <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                                         SKU
                                     </TableHead>
-                                    <TableHead className="h-auto min-w-[292.67px] px-6 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748]">
+                                    <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                                         CATEGORY
                                     </TableHead>
-                                    <TableHead className="h-auto min-w-[212.52px] px-6 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748]">
+                                    <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                                         PRICE
                                     </TableHead>
-                                    <TableHead className="h-auto min-w-[354.09px] px-6 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748]">
+                                    <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                                         STOCK
                                     </TableHead>
-                                    <TableHead className="h-auto min-w-[313.5px] px-6 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748]">
+                                    <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                                         STATUS
                                     </TableHead>
-                                    <TableHead className="h-auto min-w-[266.09px] px-6 py-4 text-right [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748]">
+                                    <TableHead className="h-auto px-3 py-4 text-right [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                                         ACTIONS
                                     </TableHead>
                                 </TableRow>
@@ -364,32 +364,32 @@ export const MainContentWrapperSubsection = () => {
                                                     : "border-zinc-50 hover:bg-transparent"
                                             }
                                         >
-                                            <TableCell className="min-w-[509.14px] px-6 py-5">
-                                                <div className="flex w-[461.14px] items-center gap-4">
+                                            <TableCell className="px-3 py-5 md:px-6">
+                                                <div className="flex min-w-0 items-center gap-4">
                                                     <div className="h-12 w-12 rounded-lg border border-zinc-100 bg-[linear-gradient(0deg,rgba(244,244,245,1)_0%,rgba(244,244,245,1)_100%)]" />
-                                                    <div className="inline-flex flex-col items-start">
-                                                        <div className="mt-[-1.00px] flex h-5 items-center whitespace-nowrap [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-black">
+                                                    <div className="inline-flex min-w-0 flex-col items-start">
+                                                        <div className="mt-[-1.00px] flex h-5 min-w-0 items-center truncate [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-black">
                                                             {product.name}
                                                         </div>
-                                                        <div className="mt-[-1.00px] flex h-4 items-center whitespace-nowrap [font-family:'Manrope',Helvetica] text-xs font-normal leading-4 tracking-[0] text-zinc-400">
+                                                        <div className="mt-[-1.00px] flex h-4 min-w-0 items-center truncate [font-family:'Manrope',Helvetica] text-xs font-normal leading-4 tracking-[0] text-zinc-400">
                                                             {product.variant}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="min-w-[289.98px] px-6 py-5 pl-12 [font-family:'Manrope',Helvetica] text-base font-normal leading-[25.6px] tracking-[0] text-[#444748]">
+                                            <TableCell className="px-3 py-5 [font-family:'Manrope',Helvetica] text-sm font-normal leading-[25.6px] tracking-[0] text-[#444748] md:px-6 md:pl-12">
                                                 {product.sku}
                                             </TableCell>
-                                            <TableCell className="min-w-[292.67px] px-6 py-5">
+                                            <TableCell className="px-3 py-5 md:px-6">
                                                 <Badge className="rounded-full bg-zinc-100 px-3 py-[4.5px] [font-family:'Manrope',Helvetica] text-xs font-medium leading-4 tracking-[0] text-zinc-600 hover:bg-zinc-100">
                                                     {product.category}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="min-w-[212.52px] px-6 py-5 [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-black">
+                                            <TableCell className="px-3 py-5 [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-black md:px-6">
                                                 {product.price}
                                             </TableCell>
-                                            <TableCell className="min-w-[354.09px] px-6 py-5">
-                                                <div className="flex w-[330.08px] items-center gap-2">
+                                            <TableCell className="px-3 py-5 md:px-6">
+                                                <div className="flex min-w-0 items-center gap-2">
                                                     <Progress
                                                         value={product.stockProgress}
                                                         className={`h-1.5 w-24 rounded-full bg-zinc-100 ${getProgressIndicatorClass(product.stockTone)}`}
@@ -401,7 +401,7 @@ export const MainContentWrapperSubsection = () => {
                                                     </span>
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="min-w-[313.5px] px-6 py-5">
+                                            <TableCell className="px-3 py-5 md:px-6">
                                                 <Badge
                                                     className={`gap-1.5 rounded-full px-2.5 py-1 [font-family:'Manrope',Helvetica] text-xs font-semibold leading-4 tracking-[0] ${statusStyles.badge}`}
                                                 >
@@ -411,7 +411,7 @@ export const MainContentWrapperSubsection = () => {
                                                     {product.status}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="min-w-[266.09px] px-6 py-5">
+                                            <TableCell className="px-3 py-5 md:px-6">
                                                 <div className="flex justify-end">
                                                     <Button
                                                         variant="ghost"
@@ -473,7 +473,7 @@ export const MainContentWrapperSubsection = () => {
                     </footer>
                 </CardContent>
             </Card>
-            <section className="grid h-fit w-full grid-cols-3 gap-6 px-0 pb-0 pt-2">
+            <section className="grid h-fit w-full grid-cols-1 gap-6 px-0 pb-0 pt-2 md:grid-cols-2 lg:grid-cols-3">
                 {summaryCards.map((card) => (
                     <Card
                         key={card.label}
