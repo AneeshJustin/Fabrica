@@ -6,18 +6,18 @@ import { MainContentWrapperSubsection } from "./sections/MainContentWrapperSubse
 export const ProductsFabrica = () => {
     return (
         <div
-            className="min-h-screen w-full bg-[linear-gradient(0deg,rgba(249,249,249,1)_0%,rgba(249,249,249,1)_100%),linear-gradient(0deg,rgba(255,255,255,1)_0%,rgba(255,255,255,1)_100%)]"
+            className="min-h-screen w-full bg-[#f9f9f9]"
             data-model-id="111:771"
         >
-            <div className="grid min-h-screen w-full grid-cols-1 md:grid-cols-[256px_minmax(0,1fr)]">
-                <aside className="border-r border-border bg-background/70">
+            <div className="flex min-h-screen">
+                <aside className="hidden w-64 shrink-0 border-r border-zinc-200 bg-neutral-50 lg:flex lg:flex-col">
                     <AsideSidenavbarWrapperSubsection />
                 </aside>
-                <div className="flex min-w-0 flex-col">
-                    <header className="sticky top-0 z-20 bg-[linear-gradient(0deg,rgba(249,249,249,1)_0%,rgba(249,249,249,1)_100%),linear-gradient(0deg,rgba(255,255,255,1)_0%,rgba(255,255,255,1)_100%)]">
+                <div className="flex min-w-0 flex-1 flex-col min-h-0">
+                    <header className="sticky top-0 z-20 border-b border-zinc-200 bg-white">
                         <HeaderTopappbarWrapperSubsection />
                     </header>
-                    <main className="min-w-0 flex-1">
+                    <main className="flex-1 min-h-0 overflow-hidden">
                         <ScrollArea className="h-full w-full">
                             <MainContentWrapperSubsection />
                         </ScrollArea>

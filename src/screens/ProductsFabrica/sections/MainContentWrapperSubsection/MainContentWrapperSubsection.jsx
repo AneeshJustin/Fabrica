@@ -4,7 +4,7 @@ import {
     PlusIcon,
     TrendingUpIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
@@ -28,17 +28,11 @@ import {
     TableRow,
 } from "../../../../components/ui/table";
 
-const filters = {
-    category: {
-        label: "Category",
-        value: "All Categories",
-        options: ["All Categories"],
-    },
-    stockLevel: {
-        label: "Stock Level",
-        value: "Any Stock",
-        options: ["Any Stock"],
-    },
+const FILTER_DEFAULTS = {
+    category: "All Categories",
+    stockLevel: "Any Stock",
+    minPrice: "",
+    maxPrice: "",
 };
 
 const products = [
@@ -91,6 +85,23 @@ const products = [
         statusTone: "out",
     },
 ];
+
+const getCategories = (items) => {
+    const unique = Array.from(new Set(items.map((item) => item.category))).sort();
+    return [FILTER_DEFAULTS.category, ...unique];
+};
+
+const STOCK_OPTIONS = [
+    FILTER_DEFAULTS.stockLevel,
+    "In Stock",
+    "Low Stock",
+    "Out of Stock",
+];
+
+const parsePrice = (value) => {
+    const numeric = Number(String(value).replace(/[^0-9.]/g, ""));
+    return Number.isFinite(numeric) ? numeric : null;
+};
 
 const summaryCards = [
     {
@@ -166,9 +177,61 @@ const getStockTextClass = (tone) => {
 export const MainContentWrapperSubsection = () => {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
+    const [category, setCategory] = useState(FILTER_DEFAULTS.category);
+    const [stockLevel, setStockLevel] = useState(FILTER_DEFAULTS.stockLevel);
+    const [minPrice, setMinPrice] = useState(FILTER_DEFAULTS.minPrice);
+    const [maxPrice, setMaxPrice] = useState(FILTER_DEFAULTS.maxPrice);
+
+    const categoryOptions = useMemo(() => getCategories(products), []);
+
+    const filteredProducts = useMemo(() => {
+        const min = minPrice === "" ? null : Number(minPrice);
+        const max = maxPrice === "" ? null : Number(maxPrice);
+
+        return products.filter((product) => {
+            if (category !== FILTER_DEFAULTS.category && product.category !== category) {
+                return false;
+            }
+
+            if (stockLevel === "In Stock" && product.stock <= 0) {
+                return false;
+            }
+
+            if (stockLevel === "Out of Stock" && product.stock > 0) {
+                return false;
+            }
+
+            if (stockLevel === "Low Stock" && !(product.stock > 0 && product.stock < 10)) {
+                return false;
+            }
+
+            const price = parsePrice(product.price);
+            if (price === null) {
+                return false;
+            }
+
+            if (min !== null && Number.isFinite(min) && price < min) {
+                return false;
+            }
+
+            if (max !== null && Number.isFinite(max) && price > max) {
+                return false;
+            }
+
+            return true;
+        });
+    }, [category, stockLevel, minPrice, maxPrice]);
+
+    const clearFilters = () => {
+        setCategory(FILTER_DEFAULTS.category);
+        setStockLevel(FILTER_DEFAULTS.stockLevel);
+        setMinPrice(FILTER_DEFAULTS.minPrice);
+        setMaxPrice(FILTER_DEFAULTS.maxPrice);
+        setCurrentPage(1);
+    };
 
     return (
-        <section className="relative mb-[-1139.71px] flex w-full flex-[0_0_auto] flex-col items-start gap-8 self-stretch px-8 pb-16 pt-24">
+        <section className="flex w-full flex-col items-start gap-8 self-stretch px-8 pb-16 pt-8">
             <header className="flex w-full flex-[0_0_auto] items-end justify-between self-stretch">
                 <div className="inline-flex flex-[0_0_auto] flex-col items-start gap-[3px]">
                     <div className="flex w-full flex-[0_0_auto] flex-col items-start self-stretch">
@@ -195,14 +258,14 @@ export const MainContentWrapperSubsection = () => {
                     <div className="grid flex-1 grid-cols-3 gap-4">
                         <div className="flex min-w-60 flex-col gap-[7px]">
                             <label className="h-[15px] whitespace-nowrap [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0] text-[#444748]">
-                                {filters.category.label}
+                                Category
                             </label>
-                            <Select defaultValue={filters.category.value}>
+                            <Select value={category} onValueChange={setCategory}>
                                 <SelectTrigger className="h-[42px] rounded-lg border-zinc-200 px-4 [font-family:'Manrope',Helvetica] text-sm font-normal leading-5 tracking-[0] text-[#1a1c1c]">
-                                    <SelectValue placeholder={filters.category.value} />
+                                    <SelectValue placeholder={FILTER_DEFAULTS.category} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {filters.category.options.map((option) => (
+                                    {categoryOptions.map((option) => (
                                         <SelectItem key={option} value={option}>
                                             {option}
                                         </SelectItem>
@@ -212,14 +275,14 @@ export const MainContentWrapperSubsection = () => {
                         </div>
                         <div className="flex min-w-60 flex-col gap-[7px]">
                             <label className="h-[15px] whitespace-nowrap [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0] text-[#444748]">
-                                {filters.stockLevel.label}
+                                Stock Level
                             </label>
-                            <Select defaultValue={filters.stockLevel.value}>
+                            <Select value={stockLevel} onValueChange={setStockLevel}>
                                 <SelectTrigger className="h-[42px] rounded-lg border-zinc-200 px-4 [font-family:'Manrope',Helvetica] text-sm font-normal leading-5 tracking-[0] text-[#1a1c1c]">
-                                    <SelectValue placeholder={filters.stockLevel.value} />
+                                    <SelectValue placeholder={FILTER_DEFAULTS.stockLevel} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {filters.stockLevel.options.map((option) => (
+                                    {STOCK_OPTIONS.map((option) => (
                                         <SelectItem key={option} value={option}>
                                             {option}
                                         </SelectItem>
@@ -233,7 +296,8 @@ export const MainContentWrapperSubsection = () => {
                             </label>
                             <div className="flex items-center gap-2">
                                 <Input
-                                    defaultValue=""
+                                    value={minPrice}
+                                    onChange={(event) => setMinPrice(event.target.value)}
                                     placeholder="Min"
                                     className="h-[42px] rounded-lg border-zinc-200 px-4 [font-family:'Manrope',Helvetica] text-sm font-normal text-gray-500 placeholder:text-gray-500"
                                 />
@@ -241,7 +305,8 @@ export const MainContentWrapperSubsection = () => {
                                     -
                                 </span>
                                 <Input
-                                    defaultValue=""
+                                    value={maxPrice}
+                                    onChange={(event) => setMaxPrice(event.target.value)}
                                     placeholder="Max"
                                     className="h-[42px] rounded-lg border-zinc-200 px-4 [font-family:'Manrope',Helvetica] text-sm font-normal text-gray-500 placeholder:text-gray-500"
                                 />
@@ -251,6 +316,7 @@ export const MainContentWrapperSubsection = () => {
                     <Button
                         variant="secondary"
                         className="h-auto rounded-lg bg-[#e2e3de] px-6 py-2.5 [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-[#636561] shadow-none hover:bg-[#e2e3de]"
+                        onClick={clearFilters}
                     >
                         Clear Filters
                     </Button>
@@ -286,7 +352,7 @@ export const MainContentWrapperSubsection = () => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {products.map((product, index) => {
+                                {filteredProducts.map((product, index) => {
                                     const statusStyles = getStatusClasses(product.statusTone);
 
                                     return (
@@ -364,7 +430,7 @@ export const MainContentWrapperSubsection = () => {
                     <Separator className="bg-zinc-100" />
                     <footer className="flex items-center justify-between bg-[#fafafa4c] px-6 py-4">
                         <p className="whitespace-nowrap [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0] text-zinc-500">
-                            Showing 1 to 4 of 32 products
+                            Showing 1 to {filteredProducts.length} of {filteredProducts.length} products
                         </p>
                         <nav
                             aria-label="Pagination"

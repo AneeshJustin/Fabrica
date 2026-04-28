@@ -29,7 +29,7 @@ export const AsideSidenavbarWrapperSubsection = () => {
     const currentPath = "/products-u45-fabrica-admin";
 
     return (
-        <aside className="flex h-[1079px] w-64 flex-col items-start gap-2 self-stretch border-r border-zinc-200 bg-neutral-50 p-4">
+        <aside className="flex h-full w-64 flex-col items-start gap-2 self-stretch border-r border-zinc-200 bg-neutral-50 p-4">
             <header className="flex w-full flex-col items-start px-4 pb-8 pt-0">
                 <h1 className="[font-family:'Manrope',Helvetica] text-2xl font-extrabold leading-8 tracking-[-1.20px] text-zinc-900">
                     Fabrica

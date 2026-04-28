@@ -14,7 +14,7 @@ const actionButtons = [
 
 export const HeaderTopappbarWrapperSubsection = () => {
     return (
-        <header className="absolute left-64 top-0 flex h-16 w-[calc(100%_-_256px)] items-center justify-between border-b border-zinc-200 bg-[#ffffffcc] px-8 py-0 shadow-[0px_1px_2px_#0000000d] backdrop-blur-[6px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(6px)_brightness(100%)]">
+        <header className="flex h-16 w-full items-center justify-between border-b border-zinc-200 bg-[#ffffffcc] px-8 py-0 shadow-[0px_1px_2px_#0000000d] backdrop-blur-[6px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(6px)_brightness(100%)]">
             <div className="flex max-w-md flex-1 items-center">
                 <div className="relative w-full">
                     <SearchIcon className="pointer-events-none absolute left-[15px] top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />

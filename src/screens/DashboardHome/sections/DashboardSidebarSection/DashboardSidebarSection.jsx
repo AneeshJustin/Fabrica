@@ -29,7 +29,7 @@ export const DashboardSidebarSection = () => {
     const currentPath = window.location.pathname;
 
     return (
-        <aside className="relative flex h-full min-h-screen w-full max-w-64 flex-col gap-2 self-stretch bg-gray-100 p-4">
+        <aside className="relative flex h-full min-h-screen w-full max-w-64 flex-col gap-2 self-stretch  border-gray-500 bg-neutral-50 p-4">
             <header className="flex w-full flex-col px-4 pb-8 pt-0">
                 <h1 className="mt-[-1.00px] flex h-8 items-center whitespace-nowrap text-2xl font-extrabold leading-8 tracking-[-1.20px] text-zinc-900 [font-family:'Manrope',Helvetica]">
                     Fabrica
@@ -38,7 +38,7 @@ export const DashboardSidebarSection = () => {
                     Admin Portal
                 </p>
             </header>
-            <nav aria-label="Sidebar" className="flex w-full flex-col gap-1">
+            <nav aria-label="Sidebar" className="flex w-full flex-col gap-1  border-gray-500">
                 {navigationItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = currentPath === item.path;
