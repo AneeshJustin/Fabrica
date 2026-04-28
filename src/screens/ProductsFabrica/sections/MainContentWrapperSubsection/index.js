@@ -1,1 +1,1 @@
-export { MainContentWrapperSubsection } from "./MainContentWrapperSubsection";
+export { MainContentWrapperSubsection } from './MainContentWrapperSubsection';

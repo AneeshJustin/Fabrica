@@ -1,53 +1,53 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AddProductFabrica } from "./screens/AddProductFabrica/AddProductFabrica";
-import { AnalyticsFabrica } from "./screens/AnalyticsFabrica/AnalyticsFabrica";
-import { CustomersFabrica } from "./screens/CustomersFabrica/CustomersFabrica";
-import { DashboardHome } from "./screens/DashboardHome/DashboardHome";
-import { DiscountsFabrica } from "./screens/DiscountsFabrica/DiscountsFabrica";
-import { InventoryFabrica } from "./screens/InventoryFabrica/InventoryFabrica";
-import { OrdersFabrica } from "./screens/OrdersFabrica/OrdersFabrica";
-import { ProductsFabrica } from "./screens/ProductsFabrica/ProductsFabrica";
-import { ReviewsFabrica } from "./screens/ReviewsFabrica/ReviewsFabrica";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AddProductFabrica } from './screens/AddProductFabrica/AddProductFabrica';
+import { AnalyticsFabrica } from './screens/AnalyticsFabrica/AnalyticsFabrica';
+import { CustomersFabrica } from './screens/CustomersFabrica/CustomersFabrica';
+import { DashboardHome } from './screens/DashboardHome/DashboardHome';
+import { DiscountsFabrica } from './screens/DiscountsFabrica/DiscountsFabrica';
+import { InventoryFabrica } from './screens/InventoryFabrica/InventoryFabrica';
+import { OrdersFabrica } from './screens/OrdersFabrica/OrdersFabrica';
+import { ProductsFabrica } from './screens/ProductsFabrica/ProductsFabrica';
+import { ReviewsFabrica } from './screens/ReviewsFabrica/ReviewsFabrica';
 
 const router = createBrowserRouter([
   {
-    path: "/*",
+    path: '/*',
     element: <DashboardHome />,
   },
   {
-    path: "/dashboard-home-u45-fabrica-admin",
+    path: '/dashboard-home-u45-fabrica-admin',
     element: <DashboardHome />,
   },
   {
-    path: "/add-product-u45-fabrica-admin",
+    path: '/add-product-u45-fabrica-admin',
     element: <AddProductFabrica />,
   },
   {
-    path: "/products-u45-fabrica-admin",
+    path: '/products-u45-fabrica-admin',
     element: <ProductsFabrica />,
   },
   {
-    path: "/orders-u45-fabrica-admin",
+    path: '/orders-u45-fabrica-admin',
     element: <OrdersFabrica />,
   },
   {
-    path: "/customers-u45-fabrica-admin",
+    path: '/customers-u45-fabrica-admin',
     element: <CustomersFabrica />,
   },
   {
-    path: "/inventory-u45-fabrica-admin",
+    path: '/inventory-u45-fabrica-admin',
     element: <InventoryFabrica />,
   },
   {
-    path: "/analytics-u45-fabrica-admin",
+    path: '/analytics-u45-fabrica-admin',
     element: <AnalyticsFabrica />,
   },
   {
-    path: "/discounts-u45-fabrica-admin",
+    path: '/discounts-u45-fabrica-admin',
     element: <DiscountsFabrica />,
   },
   {
-    path: "/reviews-u45-fabrica-admin",
+    path: '/reviews-u45-fabrica-admin',
     element: <ReviewsFabrica />,
   },
 ]);

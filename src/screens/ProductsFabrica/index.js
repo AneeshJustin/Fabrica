@@ -1,1 +1,1 @@
-export { ProductsFabrica } from "./ProductsFabrica";
+export { ProductsFabrica } from './ProductsFabrica';
