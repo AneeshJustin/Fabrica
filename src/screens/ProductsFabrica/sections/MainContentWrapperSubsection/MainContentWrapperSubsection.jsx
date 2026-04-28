@@ -1,4 +1,5 @@
 import {
+  AlertTriangleIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   PlusIcon,
@@ -335,9 +336,6 @@ export const MainContentWrapperSubsection = () => {
               <TableHeader className="bg-[#fafafa80]">
                 <TableRow className="border-zinc-100 hover:bg-transparent">
                   <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
-                    PRODUCT
-                  </TableHead>
-                  <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
                     SKU
                   </TableHead>
                   <TableHead className="h-auto px-3 py-4 text-left [font-family:'Manrope',Helvetica] text-xs font-semibold leading-[14.4px] tracking-[0.60px] text-[#444748] md:px-6">
@@ -370,20 +368,7 @@ export const MainContentWrapperSubsection = () => {
                           : 'border-zinc-50 hover:bg-transparent'
                       }
                     >
-                      <TableCell className="px-3 py-5 md:px-6">
-                        <div className="flex min-w-0 items-center gap-4">
-                          <div className="h-12 w-12 rounded-lg border border-zinc-100 bg-[linear-gradient(0deg,rgba(244,244,245,1)_0%,rgba(244,244,245,1)_100%)]" />
-                          <div className="inline-flex min-w-0 flex-col items-start">
-                            <div className="mt-[-1.00px] flex h-5 min-w-0 items-center truncate [font-family:'Manrope',Helvetica] text-sm font-medium leading-[19.6px] tracking-[0.28px] text-black">
-                              {product.name}
-                            </div>
-                            <div className="mt-[-1.00px] flex h-4 min-w-0 items-center truncate [font-family:'Manrope',Helvetica] text-xs font-normal leading-4 tracking-[0] text-zinc-400">
-                              {product.variant}
-                            </div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="px-3 py-5 [font-family:'Manrope',Helvetica] text-sm font-normal leading-[25.6px] tracking-[0] text-[#444748] md:px-6 md:pl-12">
+                      <TableCell className="px-3 py-5 [font-family:'Manrope',Helvetica] text-sm font-normal leading-[25.6px] tracking-[0] text-[#444748] md:px-6">
                         {product.sku}
                       </TableCell>
                       <TableCell className="px-3 py-5 md:px-6">
@@ -500,7 +485,9 @@ export const MainContentWrapperSubsection = () => {
                       : 'flex h-12 w-12 items-center justify-center rounded-xl border border-zinc-100 bg-[linear-gradient(0deg,rgba(244,244,245,1)_0%,rgba(244,244,245,1)_100%)]'
                   }
                 >
-                  {card.dark ? (
+                  {card.label === 'Stock Alerts' ? (
+                    <AlertTriangleIcon className="h-5 w-5 text-orange-500" />
+                  ) : card.dark ? (
                     <TrendingUpIcon className="h-5 w-5 text-green-400" />
                   ) : (
                     <div className="h-5 w-5 rounded-full bg-zinc-300" />

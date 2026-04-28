@@ -64,7 +64,7 @@ const sidebarItems = [
     path: '/discounts-u45-fabrica-admin',
   },
   { label: 'Reviews', icon: StarIcon, path: '/reviews-u45-fabrica-admin' },
-  { label: 'Settings', icon: SettingsIcon, path: '#' },
+  { label: 'Settings', icon: SettingsIcon, path: '/settings-u45-fabrica-admin' },
 ];
 
 const discountCoupons = [

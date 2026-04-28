@@ -1,7 +1,9 @@
 import {
   BellIcon,
   BoxIcon,
+  ChevronDownIcon,
   ChevronRightIcon,
+  DownloadIcon,
   LayoutDashboardIcon,
   PackageIcon,
   PercentIcon,
@@ -16,6 +18,7 @@ import {
   TrendingDownIcon,
   MailIcon,
   PhoneIcon,
+  UserPlusIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -53,28 +56,30 @@ const sidebarItems = [
     path: '/discounts-u45-fabrica-admin',
   },
   { label: 'Reviews', icon: StarIcon, path: '/reviews-u45-fabrica-admin' },
-  { label: 'Settings', icon: SettingsIcon, path: '#' },
+  { label: 'Settings', icon: SettingsIcon, path: '/settings-u45-fabrica-admin' },
 ];
 
-const customerStats = [
+const topStats = [
   {
-    label: 'Total Customers',
-    value: '8,429',
-    change: '+12.5%',
+    label: 'TOTAL CUSTOMERS',
+    value: '12,842',
+    subtext: '+12% this month',
     positive: true,
   },
-  { label: 'Active Members', value: '6,234', change: '+8.2%', positive: true },
   {
-    label: 'Average Order Value',
-    value: '$154.20',
-    change: '-2.4%',
-    positive: false,
+    label: 'ACTIVE MEMBERS',
+    value: '4,291',
+    subtext: '33.4% engagement rate',
+    positive: null,
   },
+];
+
+const bottomStats = [
   {
-    label: 'New Registrations',
-    value: '842',
-    change: '+18.7%',
-    positive: true,
+    label: 'AVERAGE ORDER VALUE',
+    value: '$142.00',
+    subtext: 'Stable since last quarter',
+    positive: null,
   },
 ];
 
@@ -137,10 +142,34 @@ const statusColors = {
   Recent: 'bg-blue-100 text-blue-800',
 };
 
+const newRegistrations = {
+  label: 'NEW REGISTRATIONS',
+  value: '418',
+  extra: '+415',
+  avatars: [
+    {
+      src: 'https://c.animaapp.com/moiaal67fUcb10/img/ab6axudujliuhmsfz-kml2eff3xzw8jhaqg4shdysrflycmnxnkkwtupe-op05ir.png',
+      alt: 'Registration 1',
+      fallback: 'A',
+    },
+    {
+      src: 'https://c.animaapp.com/moiaal67fUcb10/img/ab6axudujliuhmsfz-kml2eff3xzw8jhaqg4shdysrflycmnxnkkwtupe-op05ir.png',
+      alt: 'Registration 2',
+      fallback: 'B',
+    },
+    {
+      src: 'https://c.animaapp.com/moiaal67fUcb10/img/ab6axudujliuhmsfz-kml2eff3xzw8jhaqg4shdysrflycmnxnkkwtupe-op05ir.png',
+      alt: 'Registration 3',
+      fallback: 'C',
+    },
+  ],
+};
+
 export const CustomersFabrica = () => {
   const navigate = useNavigate();
   const currentPath = '/customers-u45-fabrica-admin';
   const [selectedTab, setSelectedTab] = useState('All Customers');
+  const [sortBy, setSortBy] = useState('Most Recent');
 
   return (
     <div
@@ -219,68 +248,154 @@ export const CustomersFabrica = () => {
           </header>
           <main className="flex-1">
             <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 p-4 sm:p-6 lg:p-8">
-              <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
-                  Customers
-                </h1>
-                <p className="text-base leading-[25.6px] text-[#444748]">
-                  Manage customer relationships and analyze purchasing behavior
-                </p>
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div className="flex flex-col gap-4">
+                  <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
+                    Customers
+                  </h1>
+                  <p className="text-base leading-[25.6px] text-[#444748]">
+                    Manage customer relationships and analyze purchasing behavior
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-10 rounded-md border-zinc-200 bg-white px-4 text-xs font-semibold text-[#444748] shadow-none hover:bg-zinc-50"
+                  >
+                    <DownloadIcon className="mr-2 h-4 w-4" />
+                    Export CSV
+                  </Button>
+                  <Button
+                    type="button"
+                    className="h-10 rounded-md bg-black px-4 text-xs font-semibold text-white shadow-none hover:bg-black"
+                  >
+                    <UserPlusIcon className="mr-2 h-4 w-4" />
+                    Add Customer
+                  </Button>
+                </div>
               </div>
 
+              {/* All 4 stat cards in one horizontal row */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {customerStats.map((stat) => (
+                {/* Total Customers */}
+                {topStats.map((stat) => (
                   <Card
                     key={stat.label}
                     className="rounded-xl border-[#e6e6e6] bg-white shadow-none"
                   >
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <p className="text-sm font-medium tracking-[0.28px] text-[#444748]">
-                            {stat.label}
-                          </p>
-                          <p className="mt-2 text-3xl font-bold tracking-[-0.72px] text-black">
-                            {stat.value}
-                          </p>
-                        </div>
-                        <div
-                          className={`flex items-center gap-1 text-xs font-medium ${
-                            stat.positive ? 'text-green-600' : 'text-red-600'
-                          }`}
-                        >
-                          {stat.positive ? (
-                            <TrendingUpIcon className="h-3 w-3" />
-                          ) : (
-                            <TrendingDownIcon className="h-3 w-3" />
-                          )}
-                          {stat.change}
-                        </div>
+                      <div className="flex flex-col gap-1">
+                        <p className="text-xs font-semibold tracking-[0.60px] text-[#444748] uppercase">
+                          {stat.label}
+                        </p>
+                        <p className="mt-1 text-3xl font-bold tracking-[-0.72px] text-black">
+                          {stat.value}
+                        </p>
+                        <p className={`mt-1 text-sm ${stat.positive ? 'text-green-600' : 'text-[#444748]'}`}>
+                          {stat.positive && <TrendingUpIcon className="inline h-3 w-3 mr-1" />}
+                          {stat.subtext}
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+
+                {/* Average Order Value */}
+                {bottomStats.map((stat) => (
+                  <Card
+                    key={stat.label}
+                    className="rounded-xl border-[#e6e6e6] bg-white shadow-none"
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex flex-col gap-1">
+                        <p className="text-xs font-semibold tracking-[0.60px] text-[#444748] uppercase">
+                          {stat.label}
+                        </p>
+                        <p className="mt-1 text-3xl font-bold tracking-[-0.72px] text-black">
+                          {stat.value}
+                        </p>
+                        <p className="mt-1 text-sm text-[#444748]">
+                          {stat.subtext}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+
+                {/* New Registrations - Dark Card */}
+                <Card className="rounded-xl border-0 bg-[#18181B] shadow-none">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col gap-3">
+                      <p className="text-xs font-semibold tracking-[0.60px] text-[#A1A1AA] uppercase">
+                        {newRegistrations.label}
+                      </p>
+                      <p className="text-3xl font-bold tracking-[-0.72px] text-white">
+                        {newRegistrations.value}
+                      </p>
+                      <div className="flex items-center mt-1">
+                        <div className="flex items-center">
+                          {newRegistrations.avatars.map((avatar, index) => (
+                            <Avatar
+                              key={avatar.alt}
+                              className={`h-8 w-8 border-2 border-[#18181B] ${
+                                index > 0 ? '-ml-2' : ''
+                              }`}
+                            >
+                              <AvatarImage src={avatar.src} alt={avatar.alt} />
+                              <AvatarFallback>{avatar.fallback}</AvatarFallback>
+                            </Avatar>
+                          ))}
+                        </div>
+                        <div className="-ml-2 flex h-8 items-center rounded-full bg-black px-3 text-xs font-semibold text-white">
+                          +{newRegistrations.extra}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
 
               <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
                 <CardContent className="p-6">
                   <div className="flex flex-col gap-6">
-                    <div className="flex flex-wrap gap-2 border-b border-zinc-200">
-                      {['All Customers', 'VIP', 'Recent'].map((tab) => (
-                        <Button
-                          key={tab}
-                          type="button"
-                          variant="ghost"
-                          className={`h-auto rounded-none border-b-2 px-4 py-2 text-sm font-medium tracking-[0.28px] transition-colors ${
-                            selectedTab === tab
-                              ? 'border-black text-black'
-                              : 'border-transparent text-[#444748] hover:text-black'
-                          }`}
-                          onClick={() => setSelectedTab(tab)}
-                        >
-                          {tab}
-                        </Button>
-                      ))}
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <div className="flex flex-wrap gap-2 border-b border-zinc-200">
+                        {['All Customers', 'VIP', 'Recent'].map((tab) => (
+                          <Button
+                            key={tab}
+                            type="button"
+                            variant="ghost"
+                            className={`h-auto rounded-none border-b-2 px-4 py-2 text-sm font-medium tracking-[0.28px] transition-colors ${
+                              selectedTab === tab
+                                ? 'border-black text-black'
+                                : 'border-transparent text-[#444748] hover:text-black'
+                            }`}
+                            onClick={() => setSelectedTab(tab)}
+                          >
+                            {tab}
+                          </Button>
+                        ))}
+                      </div>
+
+                      <div className="relative">
+                        <label className="text-xs font-medium text-[#444748] mr-2">Sort by:</label>
+                        <div className="inline-flex items-center">
+                          <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="appearance-none rounded-lg border border-[#c4c7c7] bg-white py-1.5 pl-3 pr-8 text-sm font-medium text-[#1a1c1c] outline-none cursor-pointer"
+                          >
+                            <option>Most Recent</option>
+                            <option>Name A-Z</option>
+                            <option>Name Z-A</option>
+                            <option>Most Orders</option>
+                            <option>Highest Spent</option>
+                          </select>
+                          <ChevronDownIcon className="pointer-events-none -ml-6 h-4 w-4 text-[#444748]" />
+                        </div>
+                      </div>
                     </div>
 
                     <div className="overflow-x-auto">
@@ -298,9 +413,6 @@ export const CustomersFabrica = () => {
                             </th>
                             <th className="pb-3 text-left text-xs font-semibold tracking-[0.60px] text-[#444748]">
                               Orders
-                            </th>
-                            <th className="pb-3 text-left text-xs font-semibold tracking-[0.60px] text-[#444748]">
-                              Total Spent
                             </th>
                             <th className="pb-3 text-left text-xs font-semibold tracking-[0.60px] text-[#444748]">
                               Actions
@@ -351,17 +463,7 @@ export const CustomersFabrica = () => {
                               <td className="py-4 text-sm font-medium tracking-[0.28px] text-[#1a1c1c]">
                                 {customer.orders}
                               </td>
-                              <td className="py-4 text-sm font-medium tracking-[0.28px] text-[#1a1c1c]">
-                                {customer.spent}
-                              </td>
                               <td className="py-4">
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  className="h-auto p-0 text-zinc-700 hover:bg-transparent"
-                                >
-                                  <ChevronRightIcon className="h-4 w-4" />
-                                </Button>
                               </td>
                             </tr>
                           ))}
@@ -428,54 +530,24 @@ export const CustomersFabrica = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
+                <Card className="rounded-xl border-0 bg-[#18181B] shadow-none">
                   <CardContent className="p-6">
-                    <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c] mb-4">
+                    <h2 className="text-xl font-semibold leading-[31.2px] text-white mb-2">
                       Customer Segment Analysis
                     </h2>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-[#444748]">
-                          VIP Customers
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-32 bg-zinc-200 rounded-full h-2">
-                            <div
-                              className="bg-purple-600 h-2 rounded-full"
-                              style={{ width: '25%' }}
-                            ></div>
-                          </div>
-                          <span className="text-sm font-medium">25%</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-[#444748]">
-                          Regular Customers
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-32 bg-zinc-200 rounded-full h-2">
-                            <div
-                              className="bg-blue-600 h-2 rounded-full"
-                              style={{ width: '60%' }}
-                            ></div>
-                          </div>
-                          <span className="text-sm font-medium">60%</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-[#444748]">
-                          New Customers
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <div className="w-32 bg-zinc-200 rounded-full h-2">
-                            <div
-                              className="bg-green-600 h-2 rounded-full"
-                              style={{ width: '15%' }}
-                            ></div>
-                          </div>
-                          <span className="text-sm font-medium">15%</span>
-                        </div>
-                      </div>
+                    <p className="text-sm text-[#A1A1AA] mb-5">
+                      Identify your most profitable segments and automate targeted marketing campaigns.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {['Luxury Tier', 'Essential Buyers', 'Gifting Segment', 'New Signups'].map((segment) => (
+                        <button
+                          key={segment}
+                          type="button"
+                          className="rounded-full bg-[#27272A] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#3f3f46]"
+                        >
+                          {segment}
+                        </button>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>

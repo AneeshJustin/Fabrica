@@ -1,6 +1,8 @@
 import {
   BellIcon,
   BoxIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
   ChevronRightIcon,
   LayoutDashboardIcon,
   PackageIcon,
@@ -14,6 +16,7 @@ import {
   UsersIcon,
   FilterIcon,
   DownloadIcon,
+  TrendingUpIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -58,14 +61,14 @@ const sidebarItems = [
     path: '/discounts-u45-fabrica-admin',
   },
   { label: 'Reviews', icon: StarIcon, path: '/reviews-u45-fabrica-admin' },
-  { label: 'Settings', icon: SettingsIcon, path: '#' },
+  { label: 'Settings', icon: SettingsIcon, path: '/settings-u45-fabrica-admin' },
 ];
 
 const orderStats = [
-  { label: 'Total Orders', value: '1,284', change: null },
-  { label: 'Pending Shipment', value: '42', change: null },
-  { label: 'Completed Today', value: '156', change: null },
-  { label: 'Revenue Today', value: '$14,290', change: null },
+  { label: 'Total Orders', value: '1,284', subtext: '12% from last month', color: 'text-green-600', trending: true },
+  { label: 'Pending Shipment', value: '42', subtext: 'Requires immediate attention', color: 'text-orange-500', trending: false },
+  { label: 'Completed Today', value: '156', subtext: 'Target: 200 orders', color: 'text-[#444748]', trending: false },
+  { label: 'Revenue Today', value: '$14,290', subtext: '8% increase', color: 'text-green-600', trending: true },
 ];
 
 const orders = [
@@ -245,6 +248,10 @@ export const OrdersFabrica = () => {
                       <p className="mt-2 text-3xl font-bold tracking-[-0.72px] text-black">
                         {stat.value}
                       </p>
+                      <p className={`mt-1 text-sm ${stat.color}`}>
+                        {stat.trending && <TrendingUpIcon className="inline h-3 w-3 mr-1" />}
+                        {stat.subtext}
+                      </p>
                     </CardContent>
                   </Card>
                 ))}
@@ -274,14 +281,19 @@ export const OrdersFabrica = () => {
                         )
                       )}
                     </div>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="h-auto rounded-lg border-[#c4c7c7] px-4 py-2 text-sm font-medium tracking-[0.28px] text-[#1a1c1c]"
-                    >
-                      <FilterIcon className="mr-2 h-4 w-4" />
-                      Filter
-                    </Button>
+                    <div className="relative inline-flex items-center">
+                      <select
+                        className="appearance-none rounded-lg border border-[#c4c7c7] bg-white py-2 pl-3 pr-8 text-sm font-medium text-[#1a1c1c] outline-none cursor-pointer"
+                        defaultValue="Last 30 days"
+                      >
+                        <option>Last 30 days</option>
+                        <option>Last 7 days</option>
+                        <option>Last 90 days</option>
+                        <option>This year</option>
+                        <option>All time</option>
+                      </select>
+                      <ChevronDownIcon className="pointer-events-none -ml-6 h-4 w-4 text-[#444748]" />
+                    </div>
                   </div>
 
                   <div className="mt-6 overflow-x-auto">
@@ -345,13 +357,12 @@ export const OrdersFabrica = () => {
                               {order.amount}
                             </td>
                             <td className="py-4">
-                              <Button
+                              <button
                                 type="button"
-                                variant="ghost"
-                                className="h-auto p-0 text-zinc-700 hover:bg-transparent"
+                                className="text-sm font-medium text-[#1a1c1c] hover:underline"
                               >
-                                <ChevronRightIcon className="h-4 w-4" />
-                              </Button>
+                                View Details
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -359,44 +370,49 @@ export const OrdersFabrica = () => {
                     </table>
                   </div>
 
-                  <div className="mt-6 flex items-center justify-between">
-                    <p className="text-sm text-[#444748]">
-                      Showing 1-10 of 1284 orders
-                    </p>
-                    <div className="flex items-center gap-2">
+                  <div className="mt-6 flex items-center justify-center">
+                    <div className="flex items-center gap-1">
                       <Button
                         type="button"
-                        variant="outline"
-                        className="h-auto rounded-lg border-[#c4c7c7] px-3 py-1 text-sm text-[#1a1c1c]"
+                        variant="ghost"
+                        className="h-8 w-8 p-0 text-[#444748] hover:bg-zinc-100"
                       >
-                        Previous
+                        <ChevronLeftIcon className="h-4 w-4" />
                       </Button>
                       <Button
                         type="button"
-                        variant="outline"
-                        className="h-auto rounded-lg border-[#c4c7c7] px-3 py-1 text-sm text-[#1a1c1c]"
+                        className="h-8 w-8 rounded-lg bg-black p-0 text-sm text-white hover:bg-black/90"
                       >
                         1
                       </Button>
                       <Button
                         type="button"
-                        className="h-auto rounded-lg bg-black px-3 py-1 text-sm text-white"
+                        variant="ghost"
+                        className="h-8 w-8 p-0 text-sm text-[#444748] hover:bg-zinc-100"
                       >
                         2
                       </Button>
                       <Button
                         type="button"
-                        variant="outline"
-                        className="h-auto rounded-lg border-[#c4c7c7] px-3 py-1 text-sm text-[#1a1c1c]"
+                        variant="ghost"
+                        className="h-8 w-8 p-0 text-sm text-[#444748] hover:bg-zinc-100"
                       >
                         3
                       </Button>
+                      <span className="px-1 text-sm text-[#444748]">...</span>
                       <Button
                         type="button"
-                        variant="outline"
-                        className="h-auto rounded-lg border-[#c4c7c7] px-3 py-1 text-sm text-[#1a1c1c]"
+                        variant="ghost"
+                        className="h-8 w-auto px-2 p-0 text-sm text-[#444748] hover:bg-zinc-100"
                       >
-                        Next
+                        257
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        className="h-8 w-8 p-0 text-[#444748] hover:bg-zinc-100"
+                      >
+                        <ChevronRightIcon className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>

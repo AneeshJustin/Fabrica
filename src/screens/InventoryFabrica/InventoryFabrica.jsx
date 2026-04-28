@@ -2,7 +2,12 @@ import {
   BellIcon,
   BoxIcon,
   ChevronRightIcon,
+  CalendarCheck2,
+  CircleQuestionMark,
+  DownloadIcon,
   LayoutDashboardIcon,
+  LayoutGridIcon,
+  ListIcon,
   PackageIcon,
   PercentIcon,
   PlusIcon,
@@ -11,10 +16,10 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
   StarIcon,
+  TriangleAlert,
   UsersIcon,
-  TrendingUpIcon,
-  AlertTriangleIcon,
-  TruckIcon,
+  Truck,
+  Warehouse,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -59,19 +64,45 @@ const sidebarItems = [
     path: '/discounts-u45-fabrica-admin',
   },
   { label: 'Reviews', icon: StarIcon, path: '/reviews-u45-fabrica-admin' },
-  { label: 'Settings', icon: SettingsIcon, path: '#' },
+  { label: 'Settings', icon: SettingsIcon, path: '/settings-u45-fabrica-admin' },
 ];
 
 const inventoryStats = [
-  { label: 'Total Sold', value: '12,847', change: '+8.2%', positive: true },
-  { label: 'Low Stock', value: '23', change: '-12.5%', positive: false },
   {
-    label: 'Warehouse Utilization',
-    value: '78%',
-    change: '+5.3%',
-    positive: true,
+    label: 'TOTAL SKU',
+    value: '12,847',
+    icon: CalendarCheck2,
+    background: 'bg-[#FFFFFF]',
+    textColor: 'text-[#18181B]',
+    subText: '+2 from last two month',
+    subTextColor: 'text-zinc-500',
   },
-  { label: 'Items in Transit', value: '156', change: '+18.7%', positive: true },
+  {
+    label: 'LOW STOCK',
+    value: '23',
+    icon: TriangleAlert,
+    background: 'bg-[#BA1A1A1A]',
+    textColor: 'text-[#BA1A1A]',
+    subText: 'Requires immediate attention',
+    subTextColor: 'text-[#BA1A1A]',
+  },
+  {
+    label: 'WAREHOUSE UTILIZATION',
+    value: '78%',
+    icon: Warehouse,
+    background: 'bg-[#E2E3DE]',
+    textColor: 'text-[#18181B]',
+    progress: 80,
+  },
+  {
+    label: 'IN TRANSIT',
+    value: '156',
+    icon: Truck,
+    background: 'bg-[#FFFFFF]',
+    textColor: 'text-[#18181B]',
+    subText: 'Expected within 48 hours',
+    subTextColor: 'text-zinc-500',
+  },
 ];
 
 const inventoryItems = [
@@ -131,6 +162,12 @@ const statusColors = {
   'In Stock': 'bg-green-100 text-green-800',
   'Low Stock': 'bg-yellow-100 text-yellow-800',
   Critical: 'bg-red-100 text-red-800',
+};
+
+const statusPills = {
+  'In Stock': 'bg-[#E7F5EA] text-[#1F7A37]',
+  'Low Stock': 'bg-[#FEE2E2] text-[#BA1A1A]',
+  Critical: 'bg-[#BA1A1A] text-white',
 };
 
 const warehouseData = [
@@ -231,6 +268,12 @@ export const InventoryFabrica = () => {
                 >
                   <BellIcon className="h-5 w-5" />
                 </Button>
+                <Button
+                  variant="ghost"
+                  className="h-auto p-0 text-zinc-700 hover:bg-transparent"
+                >
+                  <CircleQuestionMark className="h-5 w-5" />
+                </Button>
                 <div className="h-8 w-px bg-zinc-200" />
                 <button type="button" className="flex items-center gap-3">
                   <span className="text-sm font-semibold leading-5 text-zinc-900">
@@ -249,41 +292,88 @@ export const InventoryFabrica = () => {
           </header>
           <main className="flex-1">
             <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 p-4 sm:p-6 lg:p-8">
-              <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
-                  Inventory Management
-                </h1>
-                <p className="text-base leading-[25.6px] text-[#444748]">
-                  Monitor stock levels, warehouse capacity, and product
-                  availability
-                </p>
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div className="flex flex-col gap-4">
+                  <h1 className="text-4xl font-bold tracking-[-0.96px] text-black sm:text-5xl sm:leading-[52.8px]">
+                    Inventory Management
+                  </h1>
+                  <p className="text-base leading-[25.6px] text-[#444748]">
+                    Monitor stock levels, warehouse capacity, and product
+                    availability
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-10 rounded-md border-zinc-200 bg-white px-4 text-xs font-semibold text-[#444748] shadow-none hover:bg-zinc-50"
+                  >
+                    <DownloadIcon className="mr-2 h-4 w-4" />
+                    Export CSV
+                  </Button>
+                  <Button
+                    type="button"
+                    className="h-10 rounded-md bg-black px-4 text-xs font-semibold text-white shadow-none hover:bg-black"
+                  >
+                    <PlusIcon className="mr-2 h-4 w-4" />
+                    Restock Order
+                  </Button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {inventoryStats.map((stat) => (
                   <Card
                     key={stat.label}
-                    className="rounded-xl border-[#e6e6e6] bg-white shadow-none"
+                    className={`rounded-xl border-0 shadow-none ${stat.background}`}
                   >
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <p className="text-sm font-medium tracking-[0.28px] text-[#444748]">
-                            {stat.label}
-                          </p>
-                          <p className="mt-2 text-3xl font-bold tracking-[-0.72px] text-black">
-                            {stat.value}
-                          </p>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-start gap-4">
+                          <div
+                            className={`flex h-10 w-10 items-center justify-center rounded-xl ${
+                              stat.label === 'LOW STOCK'
+                                ? 'bg-transparent'
+                                : 'bg-white/40'
+                            }`}
+                          >
+                            <stat.icon
+                              className={`h-5 w-5 ${stat.textColor}`}
+                            />
+                          </div>
+                          <div>
+                            <p
+                              className={`text-3xl font-bold tracking-[-0.72px] ${stat.textColor}`}
+                            >
+                              {stat.value}
+                            </p>
+                          </div>
                         </div>
-                        <div
-                          className={`flex items-center gap-1 text-xs font-medium ${
-                            stat.positive ? 'text-green-600' : 'text-red-600'
-                          }`}
-                        >
-                          <TrendingUpIcon className="h-3 w-3" />
-                          {stat.change}
-                        </div>
+                        <p className="text-sm font-medium tracking-[0.28px] text-[#71717A]">
+                          {stat.label}
+                        </p>
                       </div>
+
+                      {stat.progress ? (
+                        <div className="mt-4">
+                          <div className="h-2 w-full rounded-full bg-white/50">
+                            <div
+                              className="h-2 rounded-full bg-[#18181B]"
+                              style={{ width: `${stat.progress}%` }}
+                            />
+                          </div>
+                          <p className="mt-2 text-sm text-[#71717A]">
+                            {stat.progress}% completed
+                          </p>
+                        </div>
+                      ) : null}
+
+                      {stat.subText ? (
+                        <p className={`mt-4 text-sm ${stat.subTextColor}`}>
+                          {stat.subText}
+                        </p>
+                      ) : null}
                     </CardContent>
                   </Card>
                 ))}
@@ -293,49 +383,55 @@ export const InventoryFabrica = () => {
                 <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none lg:col-span-2">
                   <CardContent className="p-6">
                     <div className="flex flex-col gap-6">
-                      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                        <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c]">
-                          Product Inventory
-                        </h2>
-                        <div className="flex items-center gap-4">
-                          <Select
-                            value={selectedWarehouse}
-                            onValueChange={setSelectedWarehouse}
-                          >
-                            <SelectTrigger className="w-40">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="All">
-                                All Warehouses
-                              </SelectItem>
-                              <SelectItem value="Warehouse A">
-                                Warehouse A
-                              </SelectItem>
-                              <SelectItem value="Warehouse B">
-                                Warehouse B
-                              </SelectItem>
-                              <SelectItem value="Warehouse C">
-                                Warehouse C
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-wrap items-center gap-2">
                           <Button
                             type="button"
-                            className="h-auto rounded-lg bg-black px-4 py-2 text-sm font-medium tracking-[0.28px] text-white hover:bg-black/90"
+                            variant="outline"
+                            className="h-8 rounded-md border-zinc-200 bg-white px-3 text-xs font-medium text-[#444748] shadow-none"
                           >
-                            <PlusIcon className="mr-2 h-4 w-4" />
-                            Add Item
+                            Category: All
                           </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="h-8 rounded-md border-zinc-200 bg-white px-3 text-xs font-medium text-[#444748] shadow-none"
+                          >
+                            Status: All
+                          </Button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-medium text-[#71717A]">
+                            View:
+                          </span>
+                          <div className="flex h-10 items-center rounded-full bg-zinc-100 p-1">
+                            <button
+                              type="button"
+                              aria-label="List view"
+                              aria-pressed="true"
+                              className="flex h-8 w-10 items-center justify-center rounded-full bg-white text-[#18181B] shadow-sm"
+                            >
+                              <ListIcon className="h-4 w-4" />
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Grid view"
+                              aria-pressed="false"
+                              className="flex h-8 w-10 items-center justify-center rounded-full text-[#71717A]"
+                            >
+                              <LayoutGridIcon className="h-4 w-4" />
+                            </button>
+                          </div>
                         </div>
                       </div>
 
                       <div className="overflow-x-auto">
-                        <table className="w-full">
+                        <table className="w-full table-fixed">
                           <thead>
                             <tr className="border-b border-zinc-200">
-                              <th className="pb-3 text-left text-xs font-semibold tracking-[0.60px] text-[#444748]">
-                                Product Name
+                              <th className="w-[34%] pb-3 text-left text-[10px] font-semibold tracking-[0.60px] text-[#71717A]">
+                                PRODUCT INFO
                               </th>
                               <th className="pb-3 text-left text-xs font-semibold tracking-[0.60px] text-[#444748]">
                                 SKU
@@ -355,6 +451,9 @@ export const InventoryFabrica = () => {
                               <th className="pb-3 text-left text-xs font-semibold tracking-[0.60px] text-[#444748]">
                                 Status
                               </th>
+                              <th className="w-[92px] pb-3 text-right text-xs font-semibold tracking-[0.60px] text-[#444748]">
+                                
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -363,8 +462,18 @@ export const InventoryFabrica = () => {
                                 key={item.id}
                                 className="border-b border-zinc-100"
                               >
-                                <td className="py-4 text-sm font-medium tracking-[0.28px] text-[#1a1c1c]">
-                                  {item.name}
+                                <td className="py-4">
+                                  <div className="flex min-w-0 items-center gap-3">
+                                    <div className="h-10 w-10 shrink-0 rounded-lg bg-zinc-200" />
+                                    <div className="min-w-0">
+                                      <div className="truncate text-sm font-semibold text-[#1a1c1c]">
+                                        {item.name}
+                                      </div>
+                                      <div className="truncate text-xs text-[#A1A1AA]">
+                                        Midnight Black / Large
+                                      </div>
+                                    </div>
+                                  </div>
                                 </td>
                                 <td className="py-4 text-sm text-[#444748]">
                                   {item.sku}
@@ -373,7 +482,7 @@ export const InventoryFabrica = () => {
                                   {item.category}
                                 </td>
                                 <td className="py-4 text-sm text-[#444748]">
-                                  {item.warehouse}
+                                  {item.warehouse.replace('Warehouse ', '')}
                                 </td>
                                 <td className="py-4 text-sm text-[#444748]">
                                   {item.committed}
@@ -383,15 +492,68 @@ export const InventoryFabrica = () => {
                                 </td>
                                 <td className="py-4">
                                   <span
-                                    className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${statusColors[item.status]}`}
+                                    className={`inline-flex rounded-full px-2 py-1 text-[10px] font-semibold ${
+                                      statusPills[item.status] ?? 'bg-zinc-100 text-zinc-700'
+                                    }`}
                                   >
                                     {item.status}
                                   </span>
+                                </td>
+                                <td className="py-4 text-right">
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="h-7 rounded-md border-zinc-200 bg-white px-3 text-[10px] font-semibold text-[#444748] shadow-none hover:bg-zinc-50"
+                                  >
+                                    {item.status === 'Critical' ? 'RESTOCK' : 'UPDATE'}
+                                  </Button>
                                 </td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 text-xs text-[#A1A1AA]">
+                        <span>Showing 1 to 4 of 1,248 entries</span>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="h-10 w-10 rounded-lg border-zinc-200 bg-white p-0 text-[#71717A] shadow-none hover:bg-zinc-50"
+                            aria-label="Previous page"
+                          >
+                            <ChevronRightIcon className="h-4 w-4 rotate-180" />
+                          </Button>
+                          <Button
+                            type="button"
+                            className="h-10 w-10 rounded-lg bg-[#18181B] p-0 text-sm font-semibold text-white shadow-none hover:bg-[#18181B]"
+                          >
+                            1
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="h-10 w-10 rounded-lg border-zinc-200 bg-white p-0 text-sm font-semibold text-[#71717A] shadow-none hover:bg-zinc-50"
+                          >
+                            2
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="h-10 w-10 rounded-lg border-zinc-200 bg-white p-0 text-sm font-semibold text-[#71717A] shadow-none hover:bg-zinc-50"
+                          >
+                            3
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="h-10 w-10 rounded-lg border-zinc-200 bg-white p-0 text-[#71717A] shadow-none hover:bg-zinc-50"
+                            aria-label="Next page"
+                          >
+                            <ChevronRightIcon className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -400,66 +562,87 @@ export const InventoryFabrica = () => {
                 <div className="flex flex-col gap-6">
                   <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
                     <CardContent className="p-6">
-                      <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c] mb-4">
-                        Global Fulfillment Status
-                      </h2>
-                      <div className="space-y-4">
-                        {warehouseData.map((warehouse) => (
-                          <div key={warehouse.name} className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-medium text-[#1a1c1c]">
-                                {warehouse.name}
-                              </span>
-                              <span className="text-sm text-[#444748]">
-                                {warehouse.percentage}%
-                              </span>
-                            </div>
-                            <div className="w-full bg-zinc-200 rounded-full h-2">
-                              <div
-                                className={`${warehouse.color} h-2 rounded-full transition-all duration-300`}
-                                style={{ width: `${warehouse.percentage}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                        ))}
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c]">
+                            Global Fulfillment Status
+                          </h2>
+                          <p className="mt-1 text-xs text-[#71717A]">
+                            Real-time status of major logistics hubs.
+                          </p>
+                        </div>
+                        <span className="text-[10px] font-semibold tracking-[0.60px] text-[#A1A1AA]">
+                          LIVE DATA
+                        </span>
+                      </div>
+
+                      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        <div className="rounded-lg bg-[#FAFAFA] p-4">
+                          <p className="text-[10px] font-semibold tracking-[0.60px] text-[#A1A1AA]">
+                            NORTH AMERICA (LA)
+                          </p>
+                          <p className="mt-2 text-xl font-semibold text-[#1a1c1c]">
+                            94%
+                          </p>
+                          <p className="mt-1 text-xs text-[#BA1A1A]">Near Capacity</p>
+                        </div>
+                        <div className="rounded-lg bg-[#FAFAFA] p-4">
+                          <p className="text-[10px] font-semibold tracking-[0.60px] text-[#A1A1AA]">
+                            EUROPE (BER)
+                          </p>
+                          <p className="mt-2 text-xl font-semibold text-[#1a1c1c]">
+                            62%
+                          </p>
+                          <p className="mt-1 text-xs text-green-600">Healthy</p>
+                        </div>
+                        <div className="rounded-lg bg-[#FAFAFA] p-4">
+                          <p className="text-[10px] font-semibold tracking-[0.60px] text-[#A1A1AA]">
+                            ASIA (TYO)
+                          </p>
+                          <p className="mt-2 text-xl font-semibold text-[#1a1c1c]">
+                            78%
+                          </p>
+                          <p className="mt-1 text-xs text-[#71717A]">Optimal</p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="rounded-xl border-[#e6e6e6] bg-white shadow-none">
+                  <Card className="rounded-xl border-0 bg-[#18181B] shadow-none">
                     <CardContent className="p-6">
-                      <div className="flex items-center gap-2 mb-4">
-                        <TruckIcon className="h-5 w-5 text-[#1a1c1c]" />
-                        <h2 className="text-xl font-semibold leading-[31.2px] text-[#1a1c1c]">
-                          Stock Activity
-                        </h2>
-                      </div>
-                      <div className="space-y-3">
-                        {stockActivity.map((activity, index) => (
-                          <div
-                            key={index}
-                            className="flex items-start gap-3 pb-3 border-b border-zinc-100 last:border-0"
-                          >
+                      <h2 className="text-sm font-semibold text-white">Stock Activity</h2>
+
+                      <div className="mt-4 space-y-4">
+                        {stockActivity.slice(0, 3).map((activity, index) => (
+                          <div key={index} className="flex gap-3">
                             <div
                               className={`mt-1 h-2 w-2 rounded-full ${
                                 activity.type === 'warning'
-                                  ? 'bg-yellow-500'
+                                  ? 'bg-red-500'
                                   : activity.type === 'success'
                                     ? 'bg-green-500'
-                                    : 'bg-blue-500'
+                                    : 'bg-zinc-400'
                               }`}
-                            ></div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm text-[#1a1c1c] leading-5">
+                            />
+                            <div className="min-w-0">
+                              <p className="text-xs font-semibold text-white">
                                 {activity.action}
                               </p>
-                              <p className="text-xs text-[#444748] mt-1">
+                              <p className="mt-1 text-[10px] text-[#A1A1AA]">
                                 {activity.time}
                               </p>
                             </div>
                           </div>
                         ))}
                       </div>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="mt-6 h-9 w-full rounded-md border-white/10 bg-transparent text-xs font-semibold text-white shadow-none hover:bg-white/5"
+                      >
+                        VIEW ALL LOGS
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>

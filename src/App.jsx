@@ -8,6 +8,7 @@ import { InventoryFabrica } from './screens/InventoryFabrica/InventoryFabrica';
 import { OrdersFabrica } from './screens/OrdersFabrica/OrdersFabrica';
 import { ProductsFabrica } from './screens/ProductsFabrica/ProductsFabrica';
 import { ReviewsFabrica } from './screens/ReviewsFabrica/ReviewsFabrica';
+import { SettingsFabrica } from './screens/SettingsFabrica/SettingsFabrica';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: '/reviews-u45-fabrica-admin',
     element: <ReviewsFabrica />,
+  },
+  {
+    path: '/settings-u45-fabrica-admin',
+    element: <SettingsFabrica />,
   },
 ]);
 
